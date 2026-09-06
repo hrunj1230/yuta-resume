@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>정형륜 — WEB/APP 개발 · 에이전트 놀이터</title>
+<meta name="description" content="6년 7개월 WEB/APP 개발. 카카오테크 부트캠프에서 에이전트를 사람 손에 쥐여주는 일을 배우고 있습니다." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/quiple/galmuri@latest/dist/galmuri.css" />
+
+<style>
+  :root{
+    --paper:#E9EEF2;
+    --paper-2:#F3F6F8;
+    --grid:#D5DFE6;
+    --ink:#17242E;
+    --ink-60:rgba(23,36,46,.62);
+    --ink-30:rgba(23,36,46,.28);
+    --clay:#E8663A;
+    --teal:#12A17E;
+    --indigo:#6B5BE6;
+    --graphite:#39414B;
+    --ball:#FFD24A;
+
+    --display:"Bricolage Grotesque","Pretendard Variable",Pretendard,system-ui,sans-serif;
+    --body:"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;
+    --pixel:"Galmuri11","Galmuri9",ui-monospace,Menlo,monospace;
+
+    --gutter:clamp(20px,4.5vw,88px);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--body);
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:28px 28px;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  #stage{position:fixed; inset:0; width:100%; height:100%; z-index:1; pointer-events:none;}
+  .page{position:relative; z-index:1;}
+
+  section{max-width:min(1280px, 92vw); margin:0 auto; padding:0 var(--gutter);}
+  section.hero{max-width:none; width:100%;}
+
+  /* ---------- 히어로 ---------- */
+  .hero{
+    min-height:100svh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-top:72px; padding-bottom:220px;
+  }
+  .hero-copy{
+    position:relative;
+    width:100%;
+    max-width:720px;
+    padding:8px 20px 8px 0;
+    background:linear-gradient(90deg, rgba(233,238,242,.96) 0%, rgba(233,238,242,.88) 78%, rgba(233,238,242,0) 100%);
+  }
+  .hero-id{
+    display:flex; gap:28px; align-items:flex-start;
+  }
+  .id-card{
+    position:relative; flex:none; width:168px; cursor:pointer;
+    border:3px solid var(--ink); background:var(--paper-2);
+    box-shadow:8px 8px 0 var(--indigo);
+  }
+  .id-card canvas, .id-card img{
+    display:block; width:100%; aspect-ratio:3/4; image-rendering:pixelated;
+    background:#d7c4b0;
+  }
+  .id-card img{object-fit:cover; image-rendering:auto;}
+  .id-card canvas[hidden], .id-card img[hidden]{display:none !important;}
+  .id-hint{
+    display:block; text-align:center; font-family:var(--pixel); font-size:10px;
+    color:var(--ink-60); padding:7px 6px 8px; border-top:3px solid var(--ink);
+    background:var(--paper);
+  }
+  .id-card:hover .id-hint{color:var(--indigo);}
+  .id-card input{position:absolute; width:0; height:0; opacity:0;}
+  .hero-mark{
+    font-family:var(--pixel);
+    font-size:12px; color:var(--ink-60);
+    display:flex; align-items:center; gap:9px; margin-bottom:18px;
+  }
+  .pulse{width:8px;height:8px;background:var(--teal);flex:none;}
+  h1{
+    font-family:var(--display); font-weight:800;
+    font-size:clamp(36px, 4.6vw, 56px); line-height:.95;
+    letter-spacing:-.035em; margin:0;
+  }
+  .hero-role{
+    font-family:var(--pixel); font-size:14px; color:var(--indigo);
+    margin:10px 0 0;
+  }
+  .hero-sub{
+    font-size:14px; color:var(--ink-60); margin:8px 0 0; line-height:1.65;
+  }
+  .hero p{
+    font-size:16px; line-height:1.7;
+    max-width:42ch; margin:16px 0 0;
+  }
+  .hero-meta{margin-top:22px; display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-family:var(--pixel); font-size:12px; padding:8px 12px;
+    border:2px solid var(--ink); background:var(--paper-2);
+  }
+  .tag[data-c="clay"]{border-color:var(--clay);color:var(--clay);}
+  .tag[data-c="teal"]{border-color:var(--teal);color:var(--teal);}
+  .tag[data-c="indigo"]{border-color:var(--indigo);color:var(--indigo);}
+
+  .hint{margin-top:36px; font-family:var(--pixel); font-size:11px; color:var(--ink-60); display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+  .kbd{border:2px solid var(--ink-30); padding:3px 7px; background:var(--paper-2);}
+
+  /* ---------- 공통 ---------- */
+  .band{padding:clamp(64px,10vw,120px) 0;}
+  .head{display:flex; align-items:baseline; gap:16px; margin-bottom:28px; flex-wrap:wrap;}
+  .head h2{font-family:var(--display); font-weight:800; font-size:clamp(26px,3.2vw,48px); letter-spacing:-.02em; margin:0;}
+  .head span{font-size:14px; color:var(--ink-60);}
+
+  .panel{
+    background:rgba(243,246,248,.97);
+    backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+    border:3px solid var(--ink);
+  }
+
+  /* ---------- 플로팅 이력서 챗봇 ---------- */
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  .chat-shell{
+    --chat-edge:max(16px, env(safe-area-inset-right), env(safe-area-inset-bottom));
+    --chat-launcher:66px;
+    --chat-gap:12px;
+    position:fixed; inset:0; z-index:40; isolation:isolate; pointer-events:none;
+  }
+  .chat-panel{
+    --chat-reserve:calc(var(--chat-edge) + var(--chat-launcher) + var(--chat-gap));
+    position:fixed;right:var(--chat-edge);bottom:var(--chat-reserve);pointer-events:auto;
+    width:min(400px,calc(100vw - var(--chat-edge)*2));
+    height:min(620px, calc(100svh - var(--chat-reserve) - var(--chat-edge) - 12px));
+    max-height:calc(100dvh - var(--chat-reserve) - var(--chat-edge) - 12px);
+    max-width:none;margin:0;padding:0;
+    display:grid; grid-template-rows:auto minmax(0,1fr) auto;
+    overflow:hidden; border:2px solid var(--ink); border-radius:26px;
+    background:#fff; box-shadow:8px 8px 0 var(--indigo),0 24px 70px rgba(23,36,46,.2);
+    transform-origin:calc(100% - 30px) 100%;
+    transition:opacity .2s ease,transform .25s cubic-bezier(.2,.8,.2,1),visibility .2s;
+  }
+  .chat-shell.is-open .chat-panel{
+    bottom:var(--chat-edge);
+    height:min(620px, calc(100svh - var(--chat-edge)*2 - 24px));
+    max-height:calc(100dvh - var(--chat-edge)*2 - 24px);
+  }
+  .chat-panel.is-open{transform:translateZ(0);}
+  .chat-panel:not(.is-open){opacity:0;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(.94);}
+  .chat-header{
+    position:relative; display:flex; align-items:center; gap:12px; min-height:72px; padding:14px 16px;
+    color:#fff; background:linear-gradient(135deg,#5142CF 0%,var(--indigo) 55%,#7D6EF0 100%);
+  }
+  .chat-header::after{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.18;
+    background-image:linear-gradient(rgba(255,255,255,.34) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.34) 1px,transparent 1px);
+    background-size:18px 18px;
+  }
+  .chat-avatar{
+    position:relative; z-index:1; width:44px; height:44px; flex:none; display:grid; place-items:center;
+    border:2px solid rgba(255,255,255,.88); border-radius:14px; background:#fff;
+    box-shadow:0 6px 14px rgba(23,36,46,.16);
+  }
+  .chat-avatar canvas{display:block;width:36px;height:36px;image-rendering:pixelated;}
+  .chat-heading{position:relative;z-index:1;min-width:0;flex:1;}
+  .chat-heading h2{font-family:var(--display);font-size:17px;letter-spacing:-.02em;margin:0 0 3px;}
+  .chat-status{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.84);}
+  .chat-status-dot{width:7px;height:7px;border-radius:50%;background:#68F0BF;box-shadow:0 0 0 3px rgba(104,240,191,.18);}
+  .chat-close{
+    position:relative;z-index:1;margin-left:auto;width:36px;height:36px;border:0;border-radius:12px;
+    display:grid;place-items:center;cursor:pointer;color:#fff;background:rgba(255,255,255,.14);
+  }
+  .chat-close:hover{background:rgba(255,255,255,.24);}
+  .chat-close svg{width:18px;height:18px;}
+  .chat-body{min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:18px 16px 20px;background:#F5F6F8;scrollbar-width:thin;}
+  .chat-day{margin:0 0 18px;text-align:center;font-size:11px;color:#8A939B;}
+  .chat-log{display:flex;flex-direction:column;gap:12px;}
+  .chat-row{display:flex;align-items:flex-end;gap:8px;}
+  .chat-row.is-user{justify-content:flex-end;}
+  .chat-mini-avatar{
+    width:30px;height:30px;flex:none;display:grid;place-items:center;border:1px solid rgba(23,36,46,.12);
+    border-radius:10px;background:#fff;font-family:var(--pixel);font-size:11px;color:var(--indigo);
+  }
+  .chat-bubble{max-width:82%;padding:11px 13px;border-radius:6px 17px 17px 17px;background:#fff;box-shadow:0 2px 10px rgba(23,36,46,.07);font-size:14px;line-height:1.58;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;}
+  .chat-row.is-user .chat-bubble{border-radius:17px 6px 17px 17px;color:#fff;background:var(--indigo);box-shadow:none;}
+  .chat-intro{margin:4px 0 2px;padding:16px;border:1px solid #E2E5E9;border-radius:18px;background:#fff;}
+  .chat-intro strong{display:block;margin-bottom:7px;font-size:15px;}
+  .chat-intro p{margin:0;font-size:13px;line-height:1.6;color:#606B74;}
+  .chat-chips{display:flex;flex-direction:column;align-items:flex-start;gap:7px;margin:4px 0 2px 38px;}
+  .chat-chip{max-width:100%;padding:9px 12px;border:1px solid #D8DCE1;border-radius:999px;background:#fff;color:var(--ink);font-family:var(--body);font-size:12px;line-height:1.35;text-align:left;cursor:pointer;box-shadow:0 2px 7px rgba(23,36,46,.05);}
+  .chat-chip:hover{border-color:var(--indigo);color:var(--indigo);transform:translateY(-1px);}
+  .chat-typing{display:flex;gap:4px;align-items:center;min-width:52px;height:38px;}
+  .chat-typing i{width:6px;height:6px;border-radius:50%;background:#A3A9B0;animation:typing-dot .9s infinite ease-in-out;}
+  .chat-typing i:nth-child(2){animation-delay:.14s;}.chat-typing i:nth-child(3){animation-delay:.28s;}
+  @keyframes typing-dot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+  .chat-composer{padding:10px 14px 14px;border-top:1px solid #E3E6E9;background:#fff;}
+  .chat-form{display:flex;align-items:flex-end;gap:8px;padding:5px 5px 5px 14px;border:1.5px solid #D8DCE1;border-radius:18px;background:#fff;transition:border-color .15s,box-shadow .15s;}
+  .chat-form:focus-within{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(107,91,230,.12);}
+  .chat-form textarea{flex:1;min-width:0;max-height:92px;resize:none;border:0;outline:0;padding:7px 0;background:transparent;color:var(--ink);font:13px/1.5 var(--body);}
+  .chat-form textarea::placeholder{color:#929AA1;}
+  .chat-send{width:36px;height:36px;flex:none;border:0;border-radius:13px;display:grid;place-items:center;cursor:pointer;color:#fff;background:var(--indigo);}
+  .chat-send:hover{background:#5849D2;}.chat-send:disabled{cursor:default;opacity:.42;}
+  .chat-send svg{width:17px;height:17px;}
+  .chat-demo-note{margin:8px 4px 0;text-align:center;font-size:10px;line-height:1.4;color:#929AA1;}
+  .chat-launcher{
+    position:fixed;right:var(--chat-edge);bottom:var(--chat-edge);width:66px;height:66px;border:2px solid var(--ink);border-radius:23px;display:grid;place-items:center;
+    color:#fff;background:var(--indigo);box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .18s ease,background .18s;
+    pointer-events:auto;
+  }
+  .chat-launcher:hover{transform:translateY(-2px);background:#5849D2;}
+  .chat-launcher svg{width:29px;height:29px;}
+  .chat-launcher .icon-close{display:none;}
+  .chat-badge{position:absolute;right:-5px;top:-6px;min-width:21px;height:21px;padding:0 5px;display:grid;place-items:center;border:2px solid #fff;border-radius:999px;background:var(--clay);font:10px var(--pixel);}
+  .chat-shell.is-open .chat-launcher{display:none;}
+  .chat-launcher:focus-visible,.chat-close:focus-visible,.chat-chip:focus-visible,.chat-send:focus-visible{outline:3px solid var(--teal);outline-offset:3px;}
+  .note{font-size:12px; color:var(--ink-60); margin-top:12px;}
+
+  /* ---------- 하는 일 ---------- */
+  .doing{display:grid; grid-template-columns:repeat(3,1fr); border:3px solid var(--ink);}
+  .doing > div{padding:26px 24px; background:rgba(243,246,248,.97); backdrop-filter:blur(7px);}
+  .doing > div + div{border-left:3px solid var(--ink);}
+  .doing h3{font-family:var(--display); font-size:19px; margin:0 0 10px; letter-spacing:-.01em;}
+  .doing p{margin:0; font-size:14.5px; line-height:1.75;}
+  .bar{height:6px; width:46px; margin-bottom:16px;}
+
+  /* ---------- 프로젝트 ---------- */
+  .work{display:flex; flex-direction:column; gap:26px;}
+  .card{padding:28px 28px 24px;}
+  .card.a{box-shadow:8px 8px 0 var(--clay);}
+  .card.b{box-shadow:8px 8px 0 var(--teal);}
+  .card-top{display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap;}
+  .card h3{font-family:var(--display); font-size:clamp(20px,2.6vw,26px); margin:0; letter-spacing:-.02em;}
+  .card-role{font-family:var(--pixel); font-size:11px; color:var(--ink-60);}
+  .card p{font-size:15px; line-height:1.75; margin:14px 0 0; max-width:66ch;}
+  .facts{list-style:none; padding:0; margin:18px 0 0; display:grid; gap:9px;}
+  .facts li{font-size:14.5px; line-height:1.65; padding-left:18px; position:relative;}
+  .facts li::before{content:""; position:absolute; left:0; top:9px; width:8px; height:8px; background:var(--ink);}
+  .stack{display:flex; flex-wrap:wrap; gap:7px; margin-top:20px;}
+  .stack span{font-family:var(--pixel); font-size:11px; padding:5px 9px; border:2px solid var(--ink-30); color:var(--ink-60);}
+
+  /* ---------- 기록 ---------- */
+  .path{border-left:3px solid var(--ink); margin-left:6px; padding-left:0;}
+  .path li{list-style:none; padding:0 0 30px 26px; position:relative;}
+  .path li::before{content:""; position:absolute; left:-9px; top:6px; width:15px; height:15px; background:var(--paper); border:3px solid var(--ink);}
+  .path .yr{font-family:var(--pixel); font-size:11px; color:var(--ink-60); display:block; margin-bottom:6px;}
+  .path h4{font-family:var(--display); font-size:18px; margin:0 0 6px;}
+  .path p{margin:0; font-size:14.5px; line-height:1.75; max-width:58ch;}
+
+  /* ---------- 캐릭터 소개 ---------- */
+  .cast{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  .cast div{padding:16px; border:3px solid var(--ink); background:rgba(243,246,248,.97); text-align:center;}
+  .cast canvas{image-rendering:pixelated; display:block; margin:0 auto 12px;}
+  .cast strong{font-family:var(--pixel); font-size:14px; display:block; margin-bottom:8px;}
+  .cast p{margin:0; font-size:12.5px; line-height:1.65; color:var(--ink-60);}
+
+  /* ---------- 연락 ---------- */
+  .contact{padding-bottom:220px;}
+  .contact h2{font-family:var(--display); font-weight:800; font-size:clamp(30px,5vw,56px); letter-spacing:-.03em; margin:0 0 22px; line-height:1.05;}
+  .links{display:flex; flex-wrap:wrap; gap:12px;}
+  .links a{font-size:15px; text-decoration:none; color:var(--ink); border:3px solid var(--ink); padding:11px 18px; background:var(--paper-2);}
+  .links a:hover{background:var(--ink); color:var(--paper);}
+  .links a:focus-visible{outline:3px solid var(--indigo); outline-offset:3px;}
+
+  footer{border-top:3px solid var(--ink); margin-top:60px; padding:20px 0 0; font-family:var(--pixel); font-size:11px; color:var(--ink-60); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+
+  .dock{
+    position:fixed; left:50%; transform:translateX(-50%); bottom:18px; z-index:5;
+    display:flex; gap:2px; padding:5px;
+    background:rgba(243,246,248,.94); backdrop-filter:blur(8px);
+    border:3px solid var(--ink);
+  }
+  .dock a{font-family:var(--pixel); font-size:12px; text-decoration:none; color:var(--ink); padding:8px 12px;}
+  .dock a:hover{background:var(--ink); color:var(--paper);}
+  @media (max-width:1240px){
+    .chat-shell.is-open ~ .dock{left:16px; transform:none;}
+  }
+
+  .haul{
+    overflow:hidden;
+    padding:0 12px 14px 0;
+  }
+  .haul.is-placed{overflow:visible;}
+  .lift{
+    transform:translate3d(0, var(--drag, 0px), 0);
+    opacity:var(--shown, 1);
+    will-change:transform, opacity;
+  }
+
+  @media (max-width:900px){
+    .hero{padding-bottom:96px;}
+    .hero-copy{max-width:none; padding-right:0;}
+    .hero-id{flex-direction:column; gap:18px;}
+    .id-card{width:140px;}
+    h1{font-size:clamp(34px, 9vw, 48px);}
+  }
+  @media (max-width:860px){
+    .doing{grid-template-columns:1fr;}
+    .doing > div + div{border-left:0; border-top:3px solid var(--ink);}
+    .cast{grid-template-columns:repeat(2,1fr);}
+    .dock{display:none;}
+  }
+  @media (max-width:560px){
+    .chat-shell{--chat-edge:max(12px,env(safe-area-inset-bottom));}
+    .chat-panel,
+    .chat-shell.is-open .chat-panel{
+      inset:0;width:100%;height:100dvh;max-height:none;max-width:none;
+      border:0;border-radius:0;box-shadow:none;bottom:auto;
+    }
+    .chat-header{min-height:72px;padding-top:max(14px,env(safe-area-inset-top));}
+    .chat-body{padding:18px 14px;}
+    .chat-composer{padding-bottom:max(14px,env(safe-area-inset-bottom));}
+    .chat-form textarea{font-size:16px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .chat-panel,.chat-launcher,.chat-chip{transition:none;}
+    .chat-typing i{animation:none;opacity:.7;}
+  }
+  @media (min-width:1280px){
+    .hero-copy{max-width:780px;}
+    .id-card{width:196px;}
+    h1{font-size:clamp(52px, 4.2vw, 80px);}
+    .hero p{font-size:17px;}
+  }
+  @media (min-width:1600px){
+    .hero-copy{max-width:900px;}
+    .id-card{width:232px;}
+    .hero-id{gap:36px;}
+    h1{font-size:clamp(72px, 4vw, 104px);}
+    .hero-role{font-size:16px;}
+    .hero-sub{font-size:16px;}
+    .hero p{font-size:19px;}
+    .tag{font-size:13px; padding:10px 14px;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<div class="page">
+
+  <section class="hero" id="home">
+    <div class="hero-copy">
+      <div class="hero-mark"><span class="pulse"></span> 에이전트 4마리가 놀고 있습니다 · 내리면 경력을 들어올립니다</div>
+      <div class="hero-id">
+        <label class="id-card" title="클릭하면 사진을 넣을 수 있습니다">
+          <input id="portrait-file" type="file" accept="image/*" />
+          <canvas id="portrait" width="120" height="160" aria-hidden="true"></canvas>
+          <img id="portrait-img" alt="" hidden />
+          <span class="id-hint">사진 넣기</span>
+        </label>
+        <div>
+          <h1>정형륜</h1>
+          <p class="hero-role">WEB / APP 개발 · 대리</p>
+          <p class="hero-sub">부천대학교 컴퓨터 정보보안과 전문학사 · 컴퓨터소프트웨어공학과 학사<br>카카오테크 부트캠프 AI 실무개발 · 2026.05.12 – 2026.11.17</p>
+          <p>코코아와 캐시맵에서 6년 7개월 동안 전자증빙·그룹웨어·ERP를 만들어 왔습니다. 캐시맵에서는 JAVA로 붙이고, 지금은 그 위에 에이전트를 얹는 일을 배우고 있습니다.</p>
+          <div class="hero-meta">
+            <span class="tag" data-c="clay">JAVA</span>
+            <span class="tag" data-c="teal">WEB / APP</span>
+            <span class="tag" data-c="indigo">전자증빙</span>
+            <span class="tag">중급 · 6년 7개월</span>
+          </div>
+        </div>
+      </div>
+      <div class="hint">
+        <span class="kbd">클릭</span> 캐릭터를 건드려 보세요
+        <span class="kbd">드래그</span> 공을 던질 수 있습니다
+        <span class="kbd">스크롤</span> 넷이 아래 카드를 끌어올립니다
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="doing">
+    <div class="head"><h2>하는 일</h2><span>세 가지로 줄이면</span></div>
+    <div class="haul">
+    <div class="doing lift" data-lift="doing">
+      <div>
+        <div class="bar" style="background:var(--clay)"></div>
+        <h3>고객사 시스템에 붙이기</h3>
+        <p>전자증빙을 그룹웨어에 연동하고, 현장 DB에 맞춰 붙입니다. 아웃백·BHC·쇼박스·클래시스·한국마이콤처럼 회사가 바뀌어도 증빙이 실제로 돌아가게 만드는 일을 반복해 왔습니다.</p>
+      </div>
+      <div>
+        <div class="bar" style="background:var(--teal)"></div>
+        <h3>WEB/APP을 끝까지</h3>
+        <p>캐시맵에서는 JAVA로 WEB/APP을 붙입니다. 화면만 그리지 않고 서버까지 한 줄로 이어지게 만듭니다.</p>
+      </div>
+      <div>
+        <div class="bar" style="background:var(--indigo)"></div>
+        <h3>현장이 달라도 붙이기</h3>
+        <p>고객사 그룹웨어와 업무가 달라도 전자증빙이 돌아가게 맞춥니다. 쓰는 기술은 JAVA입니다.</p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="band" id="work">
+    <div class="head"><h2>만든 것</h2><span>대표로 고른 두 축</span></div>
+    <div class="work">
+      <div class="haul">
+      <article class="panel card a lift" data-lift="work-a">
+        <div class="card-top">
+          <h3>캐시맵 전자증빙 · 명함관리</h3>
+          <span class="card-role">2019.11 – 2025.11 · JAVA 개발</span>
+        </div>
+        <p>캐시맵 솔루션을 만들고, 그걸 고객사 그룹웨어에 붙여 전자증빙이 실제로 돌게 한 작업입니다. 회사가 바뀌어도 증빙 업무가 끊기지 않게 맞추는 일이었습니다.</p>
+        <ul class="facts">
+          <li>2019.11 – 2021.12 캐시맵 솔루션 개발</li>
+          <li>2021.11 – 2022.03 아웃백 전자증빙 그룹웨어 연동</li>
+          <li>2022.04 – 2022.08 BHC 전자증빙 그룹웨어 연동</li>
+          <li>2024.05 – 2024.10 쇼박스 전자증빙</li>
+          <li>2024.11 – 2025.04 클래시스 전자증빙</li>
+          <li>2025.05 – 2025.08 한국마이콤 전자증빙</li>
+          <li>2025.09 – 2025.11 나비서 명함관리 시스템</li>
+        </ul>
+        <div class="stack"><span>JAVA</span></div>
+      </article>
+      </div>
+
+      <div class="haul">
+      <article class="panel card b lift" data-lift="work-b">
+        <div class="card-top">
+          <h3>일신하이폴리 ERP</h3>
+          <span class="card-role">2025.12 – 2026.04 · 개발</span>
+        </div>
+        <p>JAVA 전자증빙 다음에 맡은 구축입니다. Node·React·Python과 DB2로 ERP를 만들며, 쓰던 스택 밖에서도 업무 시스템을 끝까지 붙였습니다.</p>
+        <ul class="facts">
+          <li>일신하이폴리 ERP 구축 · 개발</li>
+          <li>DB2 위에서 Node, React, Python으로 화면과 서버를 이음</li>
+        </ul>
+        <div class="stack"><span>Node</span><span>React</span><span>Python</span><span>DB2</span></div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="path">
+    <div class="head"><h2>지나온 길</h2><span>순서대로</span></div>
+    <div class="haul">
+    <ul class="path lift" data-lift="path">
+      <li>
+        <span class="yr">2026.05.12 – 2026.11.17</span>
+        <h4>카카오테크 부트캠프 · AI 실무개발</h4>
+        <p>6년 넘게 만든 WEB/APP 위에 에이전트를 얹는 일을 배우고 있습니다. 기간은 2026년 5월 12일부터 11월 17일까지입니다.</p>
+      </li>
+      <li>
+        <span class="yr">2019.11 – 현재</span>
+        <h4>주식회사 코코아 · 캐시맵 주식회사 · 대리</h4>
+        <p>2019년 11월부터 2025년 2월까지 코코아에서, 2025년 3월부터 지금까지 캐시맵에서 WEB/APP 개발을 맡았습니다. 전자증빙과 ERP가 그 사이 대부분의 일입니다.</p>
+      </li>
+      <li>
+        <span class="yr">기반</span>
+        <h4>부천대학교 · 컴퓨터 정보보안과 / 컴퓨터소프트웨어공학과</h4>
+        <p>컴퓨터 정보보안과 전문학사 졸업 후 컴퓨터소프트웨어공학과 학사 졸업. 기술등급은 중급, 총 경력은 6년 7개월입니다.</p>
+      </li>
+    </ul>
+    </div>
+  </section>
+
+  <section class="band" id="cast">
+    <div class="head"><h2>화면 위의 넷</h2><span>직접 찍은 도트 캐릭터입니다</span></div>
+    <div class="haul">
+    <div class="cast lift" id="cast-grid" data-lift="cast"></div>
+    </div>
+    <p class="note">특정 회사의 마스코트나 로고는 쓰지 않았습니다. 실루엣·색·성격 모두 이 페이지를 위해 새로 만든 것이라 그대로 공개해도 문제가 없습니다.</p>
+  </section>
+
+  <section class="band contact" id="contact">
+    <h2>같이 만들 게<br>있으신가요</h2>
+    <div class="haul">
+    <div class="links lift" data-lift="contact">
+      <a href="mailto:hrunj1230@naver.com">hrunj1230@naver.com</a>
+      <a href="https://github.com/hrunj1230" target="_blank" rel="noopener">GitHub</a>
+      <a href="#" target="_blank" rel="noopener">이력서 PDF</a>
+    </div>
+    </div>
+    <footer>
+      <span>© 2026 정형륜</span>
+      <span>도트 캐릭터 4종 직접 제작</span>
+    </footer>
+  </section>
+</div>
+
+<aside class="chat-shell" id="resume-chatbot" aria-label="정형륜 이력서 챗봇">
+  <section class="chat-panel" id="resume-chat" role="dialog" aria-modal="false" aria-labelledby="chat-title" aria-hidden="true" inert>
+    <header class="chat-header">
+      <span class="chat-avatar" aria-hidden="true"><canvas id="chat-avatar" width="90" height="90"></canvas></span>
+      <div class="chat-heading">
+        <h2 id="chat-title">정형륜의 이력서 봇</h2>
+        <span class="chat-status"><i class="chat-status-dot" aria-hidden="true"></i> 보통 바로 답변해요</span>
+      </div>
+      <button class="chat-close" id="chat-close" type="button" aria-label="챗봇 닫기">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+    <div class="chat-body" id="chat-body">
+      <p class="chat-day">오늘</p>
+      <div class="chat-log" id="chat-log" role="log" aria-live="polite" aria-relevant="additions text"></div>
+      <div class="chat-intro">
+        <strong>무엇이 궁금하세요?</strong>
+        <p>프로젝트, 경력, 기술 스택처럼 채용 담당자가 자주 묻는 내용을 골라보세요.</p>
+      </div>
+      <div class="chat-chips" id="chat-chips" aria-label="추천 질문"></div>
+    </div>
+    <footer class="chat-composer">
+      <form class="chat-form" id="chat-form">
+        <label class="sr-only" for="chat-q">이력서에 관해 질문하기</label>
+        <textarea id="chat-q" rows="1" maxlength="300" autocomplete="off" placeholder="메시지를 입력하세요"></textarea>
+        <button class="chat-send" id="chat-send" type="submit" aria-label="메시지 보내기" disabled>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m5 12 14-7-4.7 14-2.9-5.4L5 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m11.4 13.6 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </form>
+      <p class="chat-demo-note">미리 준비된 답변으로 동작하는 데모입니다</p>
+    </footer>
+  </section>
+
+  <button class="chat-launcher" id="chat-launcher" type="button" aria-controls="resume-chat" aria-expanded="false" aria-label="이력서 챗봇 열기">
+    <svg class="icon-chat" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M5.5 5.5h13v10h-7L7 19v-3.5H5.5v-10Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 9h7M8.5 12h4.5" stroke="#6B5BE6" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <svg class="icon-close" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m7 7 10 10M17 7 7 17" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <span class="chat-badge" aria-hidden="true">1</span>
+  </button>
+</aside>
+
+<nav class="dock" aria-label="섹션 이동">
+  <a href="#home">처음</a>
+  <a href="#resume-chat" data-open-chat>질문</a>
+  <a href="#work">프로젝트</a>
+  <a href="#path">기록</a>
+  <a href="#contact">연락</a>
+</nav>
+
+<script>
+/* =========================================================
+   도트 캐릭터 정의
+   ========================================================= */
+const SPR_W = 18, SPR_H = 18;
+const INK = '#17242E';
+const PAL = {
+  '.':null,
+  k:'#17242E', w:'#F3F6F8', y:'#FFD24A',
+  o:'#E8663A', O:'#F4A07A', d:'#C24F28',
+  t:'#12A17E', T:'#5BC4A8', s:'#0C7A5E',
+  i:'#6B5BE6', I:'#9B90F0', n:'#4A3CC0',
+  g:'#39414B', G:'#6A7480', b:'#232830'
+};
+
+const CHARS = [
+  {
+    name:'아미', color:'#E8663A',
+    blinkRows:[4,5], blinkFill:'O',
+    lines:['이 사람 문서 정리 하나는 진짜 잘해요','스펙부터 쓰고 코드를 씁니다','같이 일하면 편할 거예요'],
+    liftLine:'내가 당길게',
+    maps:{
+walk0:`
+..................
+.....kkkkkkkk.....
+....koOOOOOOok....
+...koOOOOOOOOOk...
+...kOOwwkkwwOOk...
+...kOOwwkkwwOOk...
+...koOOOOOOOOOk...
+...koOOOkkOOOOk...
+....koOOOOOOok....
+.....kkkkkkkk.....
+....k.oooooo.k....
+...kk.oooooo.kk...
+....k.odoooo.k....
+.....oooooooo.....
+......kkkkkk......
+......kk..kk......
+......ok..ko......
+......kk..kk......
+`,
+walk1:`
+..................
+.....kkkkkkkk.....
+....koOOOOOOok....
+...koOOOOOOOOOk...
+...kOOwwkkwwOOk...
+...kOOwwkkwwOOk...
+...koOOOOOOOOOk...
+...koOOOkkOOOOk...
+....koOOOOOOok....
+.....kkkkkkkk.....
+...k..oooooo..k...
+..kk..oooooo..kk..
+...k..odoooo..k...
+.....oooooooo.....
+......kkkkkk......
+.....kk....kk.....
+.....ko....ok.....
+.....kk....kk.....
+`,
+lift:`
+kk....kkkkkk....kk
+k....koOOOOOok...k
+....koOOOOOOOOOk..
+...kOOwwkkwwOOk...
+...kOOwwkkwwOOk...
+...koOOOOOOOOOk...
+...koOOOkkOOOOk...
+....koOOOOOOok....
+.....kkkkkkkk.....
+.....oooooooo.....
+.....odoooooo.....
+.....oooooooo.....
+......kkkkkk......
+.....kk....kk.....
+.....ok....ko.....
+.....kk....kk.....
+.....kk....kk.....
+..................
+`}
+  },
+  {
+    name:'노바', color:'#12A17E',
+    blinkRows:[4,5], blinkFill:'T',
+    lines:['초안은 제가, 판단은 저 사람이','프로토타입 하루면 나와요','JAVA 얘기 시키면 안 멈춰요'],
+    liftLine:'자, 끌어올려',
+    maps:{
+walk0:`
+........kk........
+........tk........
+.....kkkkkkkk.....
+....ktTTTTTTTk....
+...ktTwwkkwwTtk...
+...ktTwwkkwwTtk...
+...ktTTTTTTTTTk...
+...ktTTTkkTTTTk...
+....ktTTTTTTTk....
+.....kkkkkkkk.....
+....k.tttttt.k....
+...kk.tttttt.kk...
+....k.tstttt.k....
+.....tttttttt.....
+......kkkkkk......
+......kk..kk......
+......tk..kt......
+......kk..kk......
+`,
+walk1:`
+........kk........
+........tk........
+.....kkkkkkkk.....
+....ktTTTTTTTk....
+...ktTwwkkwwTtk...
+...ktTwwkkwwTtk...
+...ktTTTTTTTTTk...
+...ktTTTkkTTTTk...
+....ktTTTTTTTk....
+.....kkkkkkkk.....
+...k..tttttt..k...
+..kk..tttttt..kk..
+...k..tstttt..k...
+.....tttttttt.....
+......kkkkkk......
+.....kk....kk.....
+.....kt....tk.....
+.....kk....kk.....
+`,
+lift:`
+kk.....kkkk.....kk
+k......tk........k
+.....kkkkkkkk.....
+....ktTTTTTTTk....
+...ktTwwkkwwTtk...
+...ktTwwkkwwTtk...
+...ktTTTTTTTTTk...
+...ktTTTkkTTTTk...
+....ktTTTTTTTk....
+.....kkkkkkkk.....
+.....tttttttt.....
+.....tstttttt.....
+.....tttttttt.....
+......kkkkkk......
+.....kk....kk.....
+.....tk....kt.....
+.....kk....kk.....
+.....kk....kk.....
+`}
+  },
+  {
+    name:'비트', color:'#6B5BE6',
+    blinkRows:[3,4], blinkFill:'I',
+    lines:['전자증빙 연동 물어보세요','DB가 바뀌어도 따라간대요','자료는 제가 물어옵니다'],
+    liftLine:'잡았어요',
+    maps:{
+walk0:`
+......kkkkkk......
+....kkIIIIIIIkk...
+...kiIIIIIIIIIik..
+..kiIwwkwwkwwIik..
+..kiIwwkwwkwwIik..
+..kiIIIIIIIIIIIk..
+..kiIIIIIIIIIIIk..
+..kiIIIIkkIIIIik..
+...kiIIIIIIIIIik..
+....kkkkkkkkkk....
+....k.iiiiii.k....
+...kk.iiiiii.kk...
+....k.niiiii.k....
+.....iiiiiiii.....
+......kkkkkk......
+......kk..kk......
+......ik..ki......
+......kk..kk......
+`,
+walk1:`
+......kkkkkk......
+....kkIIIIIIIkk...
+...kiIIIIIIIIIik..
+..kiIwwkwwkwwIik..
+..kiIwwkwwkwwIik..
+..kiIIIIIIIIIIIk..
+..kiIIIIIIIIIIIk..
+..kiIIIIkkIIIIik..
+...kiIIIIIIIIIik..
+....kkkkkkkkkk....
+...k..iiiiii..k...
+..kk..iiiiii..kk..
+...k..niiiii..k...
+.....iiiiiiii.....
+......kkkkkk......
+.....kk....kk.....
+.....ki....ik.....
+.....kk....kk.....
+`,
+lift:`
+kk....kkkkkk....kk
+k...kkIIIIIIIkk..k
+...kiIIIIIIIIIik..
+..kiIwwkwwkwwIik..
+..kiIwwkwwkwwIik..
+..kiIIIIIIIIIIIk..
+..kiIIIIIIIIIIIk..
+..kiIIIIkkIIIIik..
+...kiIIIIIIIIIik..
+....kkkkkkkkkk....
+.....iiiiiiii.....
+.....niiiiiii.....
+.....iiiiiiii.....
+......kkkkkk......
+.....kk....kk.....
+.....ik....ki.....
+.....kk....kk.....
+.....kk....kk.....
+`}
+  },
+  {
+    name:'카이', color:'#39414B',
+    blinkRows:[4,5,6,7], blinkFill:'G',
+    lines:['채용하세요','공 좀 그만 던져요','...좋은 사람입니다'],
+    liftLine:'...',
+    maps:{
+walk0:`
+........kk........
+........gk........
+....kkkkkkkkkk....
+...kgGGGGGGGGGk...
+...kgGyyyyyyGGk...
+...kgyyyyyyyyyk...
+...kgyywkkyyyyk...
+...kgyyyyyyyyyk...
+...kgGGGGGGGGGk...
+...kggggggggggk...
+...kkkkkkkkkkkk...
+....k.gggggg.k....
+...kk.gggggg.kk...
+....k.bggggg.k....
+.....gggggggg.....
+......kk..kk......
+......gk..kg......
+......kk..kk......
+`,
+walk1:`
+........kk........
+........gk........
+....kkkkkkkkkk....
+...kgGGGGGGGGGk...
+...kgGyyyyyyGGk...
+...kgyyyyyyyyyk...
+...kgyywkkyyyyk...
+...kgyyyyyyyyyk...
+...kgGGGGGGGGGk...
+...kggggggggggk...
+...kkkkkkkkkkkk...
+...k..gggggg..k...
+..kk..gggggg..kk..
+...k..bggggg..k...
+.....gggggggg.....
+.....kk....kk.....
+.....kg....gk.....
+.....kk....kk.....
+`,
+lift:`
+kk......kk......kk
+k.......gk.......k
+....kkkkkkkkkk....
+...kgGGGGGGGGGk...
+...kgGyyyyyyGGk...
+...kgyyyyyyyyyk...
+...kgyywkkyyyyk...
+...kgyyyyyyyyyk...
+...kgGGGGGGGGGk...
+...kggggggggggk...
+...kkkkkkkkkkkk...
+.....gggggggg.....
+.....bggggggg.....
+.....gggggggg.....
+......kkkkkk......
+.....kk....kk.....
+.....gk....kg.....
+.....kk....kk.....
+`}
+  }
+];
+
+function parseMap(s){
+  const rows = s.trim().split('\n').map(r => (r + '.'.repeat(SPR_W)).slice(0, SPR_W));
+  while(rows.length < SPR_H) rows.push('.'.repeat(SPR_W));
+  return rows.slice(0, SPR_H);
+}
+
+function bakeSprite(c, frameKey, blink){
+  const rows = parseMap(c.maps[frameKey]).map(r => r.split(''));
+  if(blink && c.blinkRows){
+    const marks = [];
+    c.blinkRows.forEach(y=>{
+      for(let x=0;x<SPR_W;x++){
+        if(rows[y][x]==='w' || rows[y][x]==='y'){
+          marks.push([x,y]);
+          rows[y][x] = c.blinkFill;
+        }
+      }
+    });
+    const lidY = c.blinkRows[c.blinkRows.length-1];
+    marks.forEach(([x])=>{ rows[lidY][x] = 'k'; });
+  }
+  const cv = document.createElement('canvas');
+  cv.width = SPR_W; cv.height = SPR_H;
+  const g = cv.getContext('2d');
+  for(let y=0;y<SPR_H;y++){
+    for(let x=0;x<SPR_W;x++){
+      const col = PAL[rows[y][x]];
+      if(!col) continue;
+      g.fillStyle = col;
+      g.fillRect(x, y, 1, 1);
+    }
+  }
+  return cv;
+}
+
+const SPRITES = CHARS.map(c=>{
+  const o = {};
+  ['walk0','walk1','lift'].forEach(k=>{
+    o[k] = { 0:bakeSprite(c,k,0), 1:bakeSprite(c,k,1) };
+  });
+  return o;
+});
+
+(function(){
+  const PAL2 = Object.assign({}, PAL, {
+    s:'#E2B896', d:'#C48A62', h:'#2C2420', n:'#3D4A5C', b:'#D7C4B0'
+  });
+  const FACE = `
+bbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbkkkkkkkkkkbbbbbbbb
+bbbbkkhhhhhhhhhhkkbbbbbb
+bbbkhhhhhhhhhhhhhkbbbbbb
+bbkhhhhhhhhhhhhhhhkbbbbb
+bbkhhhhhhhhhhhhhhhkbbbbb
+bbkhhhsssssssssshhkbbbbb
+bbkssssssssssssssskbbbbb
+bbksswwksssskwwssskbbbbb
+bbksskksssssskkssskbbbbb
+bbkssssssssssssssskbbbbb
+bbksssssddsssssssskbbbbb
+bbkssssssssssssssskbbbbb
+bbkssssskkkksssssskbbbbb
+bbkssssssssssssssskbbbbb
+bbbkksssssssssskkbbbbbbb
+bbbbksssssssssskbbbbbbbb
+bbbbbkkknnnnkkkbbbbbbbbb
+bbbbkwnnnnnnnnwkbbbbbbbb
+bbbkwwknnnnnnkwwkbbbbbbb
+bbbkwwkknnnnkkwwkbbbbbbb
+bbbbkkknnnnnnnkkbbbbbbbb
+bbbbkknnnnnnnnkkbbbbbbbb
+bbbbkknnnnnnnnkkbbbbbbbb
+bbbbkknnnnnnnnkkbbbbbbbb
+bbbbkknnnnnnnnkkbbbbbbbb
+bbbbkknnnnnnnnkkbbbbbbbb
+bbbbkkkkkkkkkkkkbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbb
+`.trim().split('\n').map(r=>r.slice(0,24).padEnd(24,'.'));
+  const src = document.createElement('canvas');
+  src.width = 24; src.height = FACE.length;
+  const g = src.getContext('2d');
+  FACE.forEach((row,y)=>{
+    for(let x=0;x<row.length;x++){
+      const c = PAL2[row[x]];
+      if(!c) continue;
+      g.fillStyle = c;
+      g.fillRect(x,y,1,1);
+    }
+  });
+  const cv = document.getElementById('portrait');
+  const img = document.getElementById('portrait-img');
+  const file = document.getElementById('portrait-file');
+  const hint = document.querySelector('.id-hint');
+  const KEY = 'yuta-resume-photo';
+  function drawPlaceholder(){
+    const xg = cv.getContext('2d');
+    xg.imageSmoothingEnabled = false;
+    xg.fillStyle = '#D7C4B0';
+    xg.fillRect(0,0,cv.width,cv.height);
+    xg.drawImage(src, 0, 0, cv.width, cv.height);
+  }
+  function showPhoto(url){
+    img.src = url;
+    img.hidden = false;
+    cv.hidden = true;
+    if(hint) hint.textContent = '사진 바꾸기';
+  }
+  drawPlaceholder();
+  try{
+    const saved = localStorage.getItem(KEY);
+    if(saved) showPhoto(saved);
+  }catch(e){}
+  file.addEventListener('change', ()=>{
+    const f = file.files && file.files[0];
+    if(!f) return;
+    const r = new FileReader();
+    r.onload = ()=>{
+      try{ localStorage.setItem(KEY, r.result); }catch(e){}
+      showPhoto(r.result);
+    };
+    r.readAsDataURL(f);
+  });
+})();
+
+/* =========================================================
+   놀이터
+   ========================================================= */
+(function(){
+  const cv = document.getElementById('stage');
+  const ctx = cv.getContext('2d');
+  const reduce = false;
+
+  let W=0, H=0, DPR=1, PX=4;
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio||1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    PX = W < 700 ? 3 : W < 1500 ? 4 : W < 1800 ? 5 : 6;
+    cv.width = W*DPR; cv.height = H*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    ctx.imageSmoothingEnabled = false;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const rand=(a,b)=>a+Math.random()*(b-a);
+  const halfW = () => (SPR_W*PX)/2;
+  const halfH = () => (SPR_H*PX)/2;
+  const ballR = () => PX*4;
+
+  function playLeft(){
+    if(W < 760) return 0;
+    if(window.scrollY < 90){
+      const copy = document.querySelector('.hero-copy');
+      if(copy){
+        const r = copy.getBoundingClientRect();
+        return Math.min(W - 140, Math.max(r.right + 28, W*0.42));
+      }
+    }
+    return W >= 1200 ? W*0.48 : Math.min(W*0.55, 820);
+  }
+  function chatLeft(){
+    const shell = document.getElementById('resume-chatbot');
+    if(!shell || !shell.classList.contains('is-open') || W < 560) return W;
+    const panel = document.getElementById('resume-chat');
+    if(panel){
+      const r = panel.getBoundingClientRect();
+      if(r.width > 40) return Math.max(120, r.left - 52);
+    }
+    return W - Math.min(400, W - 32) - 36;
+  }
+  function playAllowed(x,y){
+    if(x > chatLeft()) return false;
+    if(W < 760) return y > H*0.82;
+    return x > playLeft() && y > H*0.22 && y < H-72;
+  }
+
+  const agents = CHARS.map((c,i)=>({
+    def:c, idx:i,
+    x: W*(0.66+i*0.07), y: H*rand(0.78,0.90),
+    vx: rand(-30,30), vy: rand(-16,16),
+    tx:0, ty:0, retarget:0,
+    face:1, frame:0, frameT:0, pose:'walk0',
+    blink:rand(1,5), blinking:0,
+    bubble:null, bubbleT:0, hovered:false,
+    hop:0, hv:0, latched:false
+  }));
+
+  const ball = { x:W*0.78, y:H*0.82, vx:70, vy:-40, spin:0 };
+  const pointer = { x:-999, y:-999, grab:false };
+
+  function pickTarget(a){
+    let x, y, tries=0;
+    do{
+      x = rand(W*0.08, Math.max(W*0.2, chatLeft() - 40));
+      y = rand(H*0.40, H*0.90);
+      tries++;
+    } while(!playAllowed(x,y) && tries<14);
+    if(!playAllowed(x,y)){
+      x = rand(Math.min(playLeft() + 40, chatLeft() - 80), Math.max(playLeft() + 80, chatLeft() - 40));
+      y = rand(H*0.82, H*0.92);
+    }
+    a.tx=x; a.ty=y; a.retarget=rand(2.2, 5.5);
+  }
+  agents.forEach(pickTarget);
+
+  function say(a, text, dur){ a.bubble = text; a.bubbleT = dur || 2.6; }
+
+  const hauls = [...document.querySelectorAll('.haul')].map(stage=>{
+    const box = stage.querySelector('.lift');
+    return { stage, box, key: box.getAttribute('data-lift'), drag:0, max:220, placed:false, pulling:false };
+  });
+
+  function applyHaul(h){
+    const t = h.max ? 1 - h.drag / h.max : 1;
+    h.box.style.setProperty('--drag', Math.round(h.drag)+'px');
+    h.box.style.setProperty('--shown', '1');
+    h.stage.classList.toggle('is-placed', h.placed);
+  }
+
+  function resetHauls(){
+    hauls.forEach(h=>{
+      h.max = Math.min(320, Math.max(170, h.box.offsetHeight * 0.68));
+      h.drag = h.max;
+      h.placed = false;
+      h.pulling = false;
+      applyHaul(h);
+    });
+  }
+  resetHauls();
+  window.addEventListener('resize', ()=>{
+    hauls.forEach(h=>{
+      h.max = Math.min(320, Math.max(170, h.box.offsetHeight * 0.68));
+      if(h.placed) h.drag = 0;
+      else if(!h.pulling) h.drag = h.max;
+      applyHaul(h);
+    });
+  });
+
+  function activeHaul(){
+    if(window.scrollY < 40) return null;
+    for(const h of hauls){
+      if(h.placed) continue;
+      const r = h.stage.getBoundingClientRect();
+      if(r.bottom < 50) continue;
+      if(r.top > H * 0.90) continue;
+      return h;
+    }
+    return null;
+  }
+
+  function grabSlots(h){
+    const r = h.stage.getBoundingClientRect();
+    const top = r.top + h.drag;
+    const insetL = Math.min(Math.max(r.width*0.10, 40), 120);
+    const insetR = Math.min(Math.max(r.width*0.08, 28), 72);
+    return [0,1,2,3].map(i=>({
+      x: r.left + insetL + (i/3)*(Math.max(40, r.width - insetL - insetR)),
+      y: top - halfH() + PX*3
+    }));
+  }
+
+  function drawRopes(h){
+    if(!h || h.placed) return;
+    const top = h.stage.getBoundingClientRect().top + h.drag;
+    const yLine = Math.round(top/PX)*PX;
+    ctx.fillStyle = INK;
+    agents.forEach(a=>{
+      if(!a.latched) return;
+      const hx = Math.round(a.x/PX)*PX;
+      const hy = Math.round((a.y - halfH() + PX)/PX)*PX;
+      const y0 = Math.min(hy, yLine), y1 = Math.max(hy, yLine);
+      ctx.fillRect(hx-PX, y0, PX*2, Math.max(PX, y1-y0+PX));
+      ctx.fillRect(hx-PX*2, yLine-PX, PX*4, PX*2);
+    });
+  }
+
+  function drawBubble(a){
+    const txt = a.bubble;
+    ctx.font = '12px "Galmuri11","Pretendard Variable",sans-serif';
+    const tw = Math.min(ctx.measureText(txt).width, 240);
+    const w = Math.ceil((tw + 20)/PX)*PX;
+    const h = PX*8;
+    const bx = Math.round((a.x - w/2)/PX)*PX;
+    const by = Math.round((a.y - halfH() - h - PX*4 - a.hop)/PX)*PX;
+
+    ctx.fillStyle = INK;
+    ctx.fillRect(bx-PX, by-PX, w+PX*2, h+PX*2);
+    ctx.fillStyle = '#F3F6F8';
+    ctx.fillRect(bx, by, w, h);
+    ctx.fillStyle = INK;
+    ctx.fillRect(Math.round(a.x/PX)*PX - PX*2, by+h, PX*4, PX*2);
+    ctx.fillStyle = '#F3F6F8';
+    ctx.fillRect(Math.round(a.x/PX)*PX - PX, by+h, PX*2, PX);
+
+    ctx.fillStyle = INK;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(txt, bx+w/2, by+h/2+1);
+  }
+
+  function drawAgent(a){
+    const w = SPR_W*PX, h = SPR_H*PX;
+    const x = Math.round((a.x - w/2)/PX)*PX;
+    const y = Math.round((a.y - h/2 - a.hop)/PX)*PX;
+
+    ctx.fillStyle = 'rgba(23,36,46,0.13)';
+    ctx.fillRect(x+PX*3, Math.round((a.y + h/2 - PX)/PX)*PX, w-PX*6, PX);
+
+    const pose = a.pose === 'lift' ? 'lift' : (a.frame ? 'walk1' : 'walk0');
+    const img = SPRITES[a.idx][pose][a.blinking>0?1:0];
+    ctx.save();
+    if(a.face < 0){
+      ctx.translate(x + w, y);
+      ctx.scale(-1,1);
+      ctx.drawImage(img, 0, 0, w, h);
+    } else {
+      ctx.drawImage(img, x, y, w, h);
+    }
+    ctx.restore();
+
+    if(a.hovered && !a.bubble){
+      ctx.font='11px "Galmuri11",monospace';
+      ctx.textAlign='center'; ctx.fillStyle='rgba(23,36,46,.6)';
+      ctx.fillText(a.def.name, a.x, a.y + h/2 + PX*4);
+    }
+    if(a.bubble) drawBubble(a);
+  }
+
+  function drawBall(){
+    const r = ballR();
+    const x = Math.round((ball.x - r)/PX)*PX;
+    const y = Math.round((ball.y - r)/PX)*PX;
+    ctx.fillStyle='rgba(23,36,46,0.12)';
+    ctx.fillRect(x+PX, Math.round((ball.y+r)/PX)*PX, r*2-PX*2, PX);
+    const mask = [
+      [2,5],[1,6],[0,7],[0,7],[0,7],[0,7],[1,6],[2,5]
+    ];
+    ctx.fillStyle = INK;
+    mask.forEach((m,i)=>ctx.fillRect(x+m[0]*PX, y+i*PX, (m[1]-m[0]+1)*PX, PX));
+    ctx.fillStyle = '#FFD24A';
+    mask.forEach((m,i)=>{
+      if(i===0||i===7) return;
+      ctx.fillRect(x+(m[0]+1)*PX, y+i*PX, (m[1]-m[0]-1)*PX, PX);
+    });
+    ctx.fillStyle = INK;
+    const sp = Math.abs(Math.sin(ball.spin)) > .5 ? 3 : 4;
+    ctx.fillRect(x+PX*2, y+sp*PX, PX*4, PX);
+  }
+
+  function step(dt){
+    if(window.scrollY < 36){
+      let any = false;
+      hauls.forEach(h=>{
+        if(h.placed || h.drag < h.max-1){
+          h.placed=false; h.pulling=false; h.drag=h.max; applyHaul(h); any=true;
+        }
+      });
+      if(any) agents.forEach(a=>{ a.latched=false; a.pendingLift=false; });
+    }
+
+    const cargo = activeHaul();
+    const carrying = !!cargo;
+    const slotList = cargo ? grabSlots(cargo) : null;
+
+    ball.x += ball.vx*dt; ball.y += ball.vy*dt;
+    ball.vx *= carrying ? 0.96 : 0.994;
+    ball.vy *= carrying ? 0.96 : 0.994;
+    ball.spin += ball.vx*dt*0.03;
+    const pad = 30;
+    if(ball.x < pad){ ball.x=pad; ball.vx=Math.abs(ball.vx)*0.82; }
+    if(ball.x > W-pad){ ball.x=W-pad; ball.vx=-Math.abs(ball.vx)*0.82; }
+    if(ball.y < H*0.25){ ball.y=H*0.25; ball.vy=Math.abs(ball.vy)*0.82; }
+    if(ball.y > H-pad){ ball.y=H-pad; ball.vy=-Math.abs(ball.vy)*0.82; }
+    if(!carrying && !playAllowed(ball.x, ball.y)){
+      if(W < 760){
+        ball.y = Math.max(ball.y, H*0.82);
+        if(ball.vy < 0) ball.vy = Math.abs(ball.vy)*0.7;
+      } else {
+        const gateX = playLeft();
+        if(ball.x < gateX){ ball.x = gateX; ball.vx = Math.abs(ball.vx)*0.7; }
+        if(ball.y < H*0.40){ ball.y = H*0.40; ball.vy = Math.abs(ball.vy)*0.7; }
+      }
+    }
+
+    if(pointer.grab){
+      ball.vx = (pointer.x-ball.x)*8;
+      ball.vy = (pointer.y-ball.y)*8;
+      ball.x = pointer.x; ball.y = pointer.y;
+    }
+    const speed = Math.hypot(ball.vx, ball.vy);
+
+    agents.forEach((a,i)=>{
+      let tx, ty, urgency;
+
+      if(carrying){
+        const s = slotList[i];
+        tx=s.x; ty=s.y;
+        const d = Math.hypot(a.x-tx, a.y-ty);
+        const rush = d > 90 ? 12 : 8;
+        a.x += (tx-a.x)*Math.min(1, rush*dt);
+        a.y += (ty-a.y)*Math.min(1, rush*dt);
+        a.vx = (tx-a.x)*5;
+        a.vy = (ty-a.y)*5;
+        a.latched = d < 56;
+        a.pose = a.latched ? 'lift' : (a.frame ? 'walk1' : 'walk0');
+        if(Math.abs(tx-a.x) > 6) a.face = tx > a.x ? 1 : -1;
+        urgency = 0;
+      } else {
+        a.latched = false;
+        a.pose = 'walk0';
+        const db = Math.hypot(ball.x-a.x, ball.y-a.y);
+        if((db < 280 || speed > 60) && playAllowed(ball.x, ball.y)){ tx=ball.x; ty=ball.y; urgency=1; }
+        else {
+          a.retarget -= dt;
+          if(a.retarget<=0) pickTarget(a);
+          tx=a.tx; ty=a.ty; urgency=0.85;
+        }
+        if(!playAllowed(a.x, a.y)){
+          if(W < 760) ty = Math.max(ty, H*0.82);
+          else {
+            tx = Math.max(tx, playLeft() + 80);
+            ty = Math.min(Math.max(ty, H*0.48), H-80);
+            urgency = 1;
+          }
+        }
+      }
+
+      const dp = Math.hypot(pointer.x-a.x, pointer.y-a.y);
+      a.hovered = dp < halfW()*1.3;
+      if(!carrying && dp < 170){ tx=(tx+pointer.x)/2; ty=(ty+pointer.y)/2; }
+
+      if(a.latched){
+        a.hop = 3 + Math.abs(Math.sin(performance.now()/160 + i))*4;
+      } else if(!carrying){
+        const ang = Math.atan2(ty-a.y, tx-a.x);
+        a.vx += Math.cos(ang)*260*urgency*dt;
+        a.vy += Math.sin(ang)*260*urgency*dt;
+
+        agents.forEach((b,j)=>{
+          if(i===j) return;
+          const dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
+          if(d < halfW()*2.2 && d>0.01){ a.vx += (dx/d)*200*dt; a.vy += (dy/d)*200*dt; }
+        });
+
+        a.vx *= 0.96; a.vy *= 0.96;
+        let sp = Math.hypot(a.vx,a.vy);
+        const max = 190;
+        if(sp>max){ a.vx=a.vx/sp*max; a.vy=a.vy/sp*max; sp=max; }
+        if(sp < 55 && (tx!==undefined)){
+          const ang2 = Math.atan2(ty-a.y, tx-a.x);
+          a.vx += Math.cos(ang2)*55; a.vy += Math.sin(ang2)*55;
+        }
+
+        a.x += a.vx*dt; a.y += a.vy*dt;
+      }
+
+      a.x = Math.max(halfW(), Math.min(W-halfW(), a.x));
+      a.y = Math.max(halfH(), Math.min(H-halfH(), a.y));
+      if(!carrying && W >= 760 && a.x < playLeft() + halfW()){
+        a.x = playLeft() + halfW() + 8;
+        if(a.vx < 0) a.vx = Math.abs(a.vx);
+      }
+      if(!carrying && W < 760 && a.y < H*0.84){
+        a.y = H*0.84;
+        if(a.vy < 0) a.vy = Math.abs(a.vy);
+      }
+      const chatBound = chatLeft();
+      if(!carrying && a.x > chatBound - halfW()){
+        a.x = Math.max(halfW() + 4, chatBound - halfW() - 8);
+        if(a.vx > 0) a.vx = -Math.abs(a.vx);
+      }
+
+      if(Math.abs(a.vx) > 8) a.face = a.vx > 0 ? 1 : -1;
+
+      const sp = Math.hypot(a.vx,a.vy);
+      a.frameT += dt * (0.6 + sp/170*6);
+      if(a.frameT > 0.22){ a.frame = a.frame ? 0 : 1; a.frameT = 0; }
+      if(!a.latched) a.pose = a.frame ? 'walk1' : 'walk0';
+
+      if(!carrying){
+        const db = Math.hypot(ball.x-a.x, ball.y-a.y);
+        if(db < halfW() + ballR()){
+          const k = Math.atan2(ball.y-a.y, ball.x-a.x);
+          ball.vx = Math.cos(k)*rand(240,350);
+          ball.vy = Math.sin(k)*rand(200,300);
+          a.hv = 220;
+          if(Math.random()<0.26) say(a, ['골!','받아요','내 공','좋았어'][Math.floor(Math.random()*4)], 1.4);
+        }
+      }
+
+      a.hv -= 950*dt;
+      a.hop += a.hv*dt;
+      if(a.hop < 0){ a.hop=0; a.hv=0; }
+      if(a.latched && a.hv===0 && a.hop < 8){
+        a.hop = 3 + Math.abs(Math.sin(performance.now()/160 + i))*4;
+      }
+
+      a.blink -= dt;
+      if(a.blink<=0){ a.blinking=0.12; a.blink=rand(2.5,6.5); }
+      if(a.blinking>0) a.blinking -= dt;
+
+      if(a.bubbleT>0){ a.bubbleT -= dt; if(a.bubbleT<=0) a.bubble=null; }
+    });
+
+    if(cargo && !cargo.placed){
+      const latched = agents.filter(a=>a.latched).length;
+      if(latched >= 2){
+        if(!cargo.pulling){
+          cargo.pulling = true;
+          agents.forEach((a,i)=>{
+            a.hv = 280;
+            if(a.latched) setTimeout(()=>{ say(a, a.def.liftLine, 1.6); }, 30+i*70);
+          });
+        }
+        cargo.drag = Math.max(0, cargo.drag - (70 + latched*90)*dt);
+        applyHaul(cargo);
+        if(cargo.drag <= 0){
+          cargo.drag = 0;
+          cargo.placed = true;
+          cargo.pulling = false;
+          applyHaul(cargo);
+          agents.forEach(a=>{ a.hv = 240; a.latched=false; });
+        }
+      }
+    }
+  }
+
+  let last = performance.now();
+  function frame(now){
+    const dt = Math.min(0.05, Math.max(0.008, (now-last)/1000 || 0.016));
+    last = now;
+    try{
+      ctx.clearRect(0,0,W,H);
+      ctx.save();
+      const chatPanel = document.getElementById('resume-chat');
+      if(chatPanel && chatPanel.classList.contains('is-open') && W >= 560){
+        const r = chatPanel.getBoundingClientRect();
+        ctx.beginPath();
+        ctx.rect(0,0,W,H);
+        ctx.rect(r.left-12, r.top-12, r.width+28, r.height+28);
+        ctx.clip('evenodd');
+      }
+      step(dt);
+      const haul = activeHaul();
+      if(!haul) drawBall();
+      if(haul) drawRopes(haul);
+      agents.forEach(drawAgent);
+      ctx.restore();
+    }catch(err){
+      console.error(err);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  function pos(e){ const t = e.touches ? e.touches[0] : e; return {x:t.clientX, y:t.clientY}; }
+  window.addEventListener('pointermove', e=>{ const p=pos(e); pointer.x=p.x; pointer.y=p.y; }, {passive:true});
+  window.addEventListener('pointerleave', ()=>{ pointer.x=-999; pointer.y=-999; });
+  window.addEventListener('pointerdown', e=>{
+    if(e.target.closest('a,button,input,textarea,.dock,.chat-shell,.id-card')) return;
+    const p = pos(e);
+    for(const a of agents){
+      if(Math.abs(p.x-a.x) < halfW() && Math.abs(p.y-a.y) < halfH()){
+        a.hv = 320;
+        say(a, a.def.lines[Math.floor(Math.random()*a.def.lines.length)], 2.8);
+        return;
+      }
+    }
+    if(e.target.closest('.panel,.doing,.cast')) return;
+    if(!activeHaul() && Math.hypot(p.x-ball.x, p.y-ball.y) < ballR()+24){ pointer.grab=true; }
+  });
+  window.addEventListener('pointerup', ()=>{ pointer.grab=false; });
+
+  setTimeout(()=>{ if(!reduce) say(agents[0], '안녕하세요, 아래로 내려보세요', 3.2); }, 1400);
+})();
+
+/* =========================================================
+   캐릭터 소개 카드
+   ========================================================= */
+(function(){
+  const wrap = document.getElementById('cast-grid');
+  const desc = [
+    '길게 생각하고 길게 씁니다. 문서 작업의 절반은 얘 몫.',
+    '제일 먼저 손을 듭니다. 초안을 빠르게 뽑을 때 부릅니다.',
+    '검색과 자료 정리 담당. 링크를 잔뜩 물고 옵니다.',
+    '말이 짧습니다. 대신 농담은 제일 많이 합니다.'
+  ];
+  CHARS.forEach((c,i)=>{
+    const box = document.createElement('div');
+    const cv = document.createElement('canvas');
+    const S = 5;
+    cv.width = SPR_W*S; cv.height = SPR_H*S;
+    cv.style.width = (SPR_W*S)+'px';
+    const g = cv.getContext('2d');
+    g.imageSmoothingEnabled = false;
+    g.drawImage(SPRITES[i].walk0[0], 0, 0, SPR_W*S, SPR_H*S);
+    box.appendChild(cv);
+    const n = document.createElement('strong'); n.textContent = c.name;
+    const p = document.createElement('p'); p.textContent = desc[i];
+    box.appendChild(n); box.appendChild(p);
+    wrap.appendChild(box);
+  });
+})();
+
+/* =========================================================
+   플로팅 이력서 챗봇
+   ========================================================= */
+(function(){
+  const shell = document.getElementById('resume-chatbot');
+  const panel = document.getElementById('resume-chat');
+  const launcher = document.getElementById('chat-launcher');
+  const close = document.getElementById('chat-close');
+  const body = document.getElementById('chat-body');
+  const log = document.getElementById('chat-log');
+  const chipsEl = document.getElementById('chat-chips');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('chat-q');
+  const send = document.getElementById('chat-send');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const QA = [
+    { k:['프로젝트','만든','포트폴리오','작업','증빙','erp','명함'],
+      a:'길게 이어진 축은 캐시맵 전자증빙입니다. 솔루션을 만든 뒤 아웃백, BHC, 쇼박스, 클래시스, 한국마이콤 그룹웨어에 붙였고, 2025년 가을에는 나비서 명함관리도 구축했습니다. 최근 작업은 2025년 12월부터 2026년 4월까지 일신하이폴리 ERP를 Node, React, Python, DB2로 만든 일입니다.' },
+    { k:['경력','회사','코코아','캐시맵','대리','재직'],
+      a:'2019년 11월부터 2025년 2월까지 주식회사 코코아, 2025년 3월부터 지금까지 캐시맵 주식회사에서 대리로 WEB/APP 개발을 했습니다. 총 경력은 6년 7개월입니다.' },
+    { k:['기술','스택','언어','스킬','할 줄','자바','java'],
+      a:'캐시맵에서 한 일은 JAVA입니다. 일신하이폴리 ERP는 Node, React, Python, DB2로 구축했습니다.' },
+    { k:['부트캠프','카카오','교육','지금','공부'],
+      a:'카카오테크 부트캠프 AI 실무개발 과정에 있습니다. 기간은 2026년 5월 12일부터 2026년 11월 17일까지입니다. 현장에서 만든 WEB/APP 위에 에이전트를 얹는 쪽을 보고 있습니다.' },
+    { k:['학력','학교','부천','졸업','전문학사','정보보안'],
+      a:'부천대학교 컴퓨터 정보보안과 전문학사 졸업 후 컴퓨터소프트웨어공학과 학사 졸업입니다. 기술등급은 중급입니다.' },
+    { k:['강점','잘하','장점','왜'],
+      a:'고객사 그룹웨어가 달라도 전자증빙이 돌아가게 붙인 경험입니다. 캐시맵에서는 JAVA로 끝까지 넣는 편이었습니다.' },
+    { k:['연락','이메일','메일','컨택','채용'],
+      a:'이메일은 hrunj1230@naver.com, GitHub은 github.com/hrunj1230 입니다. 짧은 문제 설명만 주시면 어떤 식으로 접근할지 먼저 정리해서 답장드립니다.' },
+    { k:['캐릭터','마스코트','배경','도트','픽셀'],
+      a:'화면에서 뛰어다니는 넷은 이 페이지를 위해 직접 찍은 도트 캐릭터입니다. 어떤 회사의 마스코트도 쓰지 않았습니다. 클릭하면 한마디씩 하고, 스크롤하면 경력을 끌어올립니다.' }
+  ];
+  const FALLBACK = '아직 그 질문에는 준비된 답이 없습니다. 프로젝트, 경력, 기술 스택, 부트캠프, 연락처 중에 하나로 물어보시면 답할 수 있어요.';
+  const CHIPS = ['어떤 프로젝트를 했나요?','경력은요?','기술 스택은요?','부트캠프는 언제인가요?'];
+
+  function answer(q){
+    const s = q.toLowerCase();
+    let best=null, score=0;
+    QA.forEach(item=>{
+      const hit = item.k.filter(k=>s.includes(k)).length;
+      if(hit>score){ score=hit; best=item; }
+    });
+    return best ? best.a : FALLBACK;
+  }
+
+  function scrollToLatest(){
+    requestAnimationFrame(()=>{ body.scrollTop = body.scrollHeight; });
+  }
+
+  function addMessage(text, who, shouldScroll=true){
+    const row=document.createElement('div');
+    row.className='chat-row'+(who==='user'?' is-user':'');
+    if(who!=='user'){
+      const avatar=document.createElement('span');
+      avatar.className='chat-mini-avatar';
+      avatar.setAttribute('aria-hidden','true');
+      avatar.textContent='JR';
+      row.appendChild(avatar);
+    }
+    const bubble=document.createElement('div');
+    bubble.className='chat-bubble';
+    bubble.textContent=text;
+    row.appendChild(bubble);
+    log.appendChild(row);
+    if(shouldScroll) scrollToLatest();
+    return row;
+  }
+
+  function addTyping(){
+    const row=document.createElement('div');
+    row.className='chat-row';
+    row.setAttribute('aria-label','답변을 작성하고 있습니다');
+    const avatar=document.createElement('span');
+    avatar.className='chat-mini-avatar';
+    avatar.setAttribute('aria-hidden','true');
+    avatar.textContent='JR';
+    const bubble=document.createElement('div');
+    bubble.className='chat-bubble chat-typing';
+    bubble.innerHTML='<i></i><i></i><i></i>';
+    row.appendChild(avatar); row.appendChild(bubble); log.appendChild(row);
+    scrollToLatest();
+    return row;
+  }
+
+  function ask(text){
+    if(!text.trim()) return;
+    const clean=text.trim();
+    addMessage(clean,'user');
+    input.value='';
+    input.style.height='auto';
+    send.disabled=true;
+    const typing=addTyping();
+    window.setTimeout(()=>{
+      typing.remove();
+      addMessage(answer(clean),'bot');
+    },reduceMotion?0:520);
+  }
+
+  function setOpen(open, focusInput){
+    shell.classList.toggle('is-open',open);
+    panel.classList.toggle('is-open',open);
+    panel.setAttribute('aria-hidden',String(!open));
+    panel.inert=!open;
+    launcher.setAttribute('aria-expanded',String(open));
+    launcher.setAttribute('aria-label',open?'이력서 챗봇 닫기':'이력서 챗봇 열기');
+    if(open){
+      scrollToLatest();
+      if(focusInput) window.setTimeout(()=>input.focus(),50);
+    }else if(focusInput){
+      launcher.focus();
+    }
+  }
+
+  CHIPS.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='chat-chip'; b.type='button'; b.textContent=c;
+    b.addEventListener('click',()=>ask(c));
+    chipsEl.appendChild(b);
+  });
+  form.addEventListener('submit',e=>{e.preventDefault();ask(input.value);});
+  input.addEventListener('input',()=>{
+    send.disabled=!input.value.trim();
+    input.style.height='auto';
+    input.style.height=Math.min(input.scrollHeight,92)+'px';
+  });
+  input.addEventListener('keydown',e=>{
+    if(e.isComposing||e.keyCode===229) return;
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();form.requestSubmit();}
+  });
+  launcher.addEventListener('click',()=>setOpen(!shell.classList.contains('is-open'),true));
+  close.addEventListener('click',()=>setOpen(false,true));
+  document.querySelectorAll('[data-open-chat]').forEach(link=>{
+    link.addEventListener('click',e=>{e.preventDefault();setOpen(true,true);});
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&shell.classList.contains('is-open')) setOpen(false,true);
+  });
+
+  const avatarCanvas=document.getElementById('chat-avatar');
+  const avatarCtx=avatarCanvas.getContext('2d');
+  avatarCtx.imageSmoothingEnabled=false;
+  avatarCtx.drawImage(SPRITES[1].walk0[0],0,0,avatarCanvas.width,avatarCanvas.height);
+
+  addMessage('안녕하세요! 정형륜의 이력서를 대신 읽어드리는 봇이에요. 궁금한 내용을 편하게 물어보세요.','bot',false);
+  const tallEnough = window.innerHeight >= 720;
+  setOpen(window.matchMedia('(min-width: 740px)').matches && tallEnough,false);
+  requestAnimationFrame(()=>{body.scrollTop=0;});
+})();
+
+</script>
+</body>
+</html>
