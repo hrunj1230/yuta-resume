@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>정형륜 이력서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+:root {
+  --c-title: #1c324b;
+  --c-body: #262d36;
+  --c-sub: #5a6470;
+  --font-base: "Pretendard", "NanumGothic", sans-serif;
+}
+body {
+  margin: 0;
+  background-color: #f3f4f6;
+  font-family: var(--font-base);
+  color: var(--c-body);
+  line-height: 1.1;
+  -webkit-font-smoothing: antialiased;
+}
+.toolbar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 16px;
+  background: #e5e7eb;
+}
+.toolbar a, .toolbar button {
+  font-family: var(--font-base);
+  font-size: 14px;
+  color: #374151;
+  text-decoration: none;
+  background: white;
+  border: 1px solid #d1d5db;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.toolbar a:hover, .toolbar button:hover {
+  background: #f9fafb;
+}
+.paper {
+  background: white;
+  width: min(210mm, 100%);
+  min-height: 297mm;
+  margin: 32px auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 14.8mm 15.9mm;
+  box-sizing: border-box;
+}
+h1, h2, h3, p, ul, li {
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  font-size: 22pt;
+  font-weight: bold;
+  color: var(--c-title);
+  margin-bottom: 8pt;
+}
+h2 {
+  font-size: 12.5pt;
+  color: var(--c-title);
+  margin-top: 16pt;
+  margin-bottom: 4pt;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 2pt;
+}
+h3 {
+  font-size: 11.5pt;
+  color: var(--c-title);
+  margin-top: 8pt;
+  margin-bottom: 2pt;
+}
+.sub, .meta {
+  color: var(--c-body);
+  font-size: 10.5pt;
+  margin-bottom: 2pt;
+}
+.body {
+  font-size: 10.5pt;
+  margin-bottom: 2pt;
+}
+ul {
+  margin-top: 2pt;
+  margin-bottom: 4pt;
+  padding-left: 12pt;
+}
+li {
+  font-size: 10.5pt;
+  margin-bottom: 2pt;
+  list-style-type: disc;
+}
+a {
+  color: inherit;
+}
+p, li {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 840px) {
+  body {
+    background-color: white;
+  }
+  .paper {
+    width: 100%;
+    margin: 0;
+    padding: 24px 16px;
+    box-shadow: none;
+    min-height: auto;
+  }
+}
+
+@media print {
+  body {
+    background-color: white;
+  }
+  .toolbar {
+    display: none;
+  }
+  .paper {
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    width: 100%;
+    min-height: auto;
+  }
+  @page {
+    size: A4;
+    margin: 14.8mm 15.9mm;
+  }
+  h2, h3, h3 + .meta, .meta + .body {
+    break-after: avoid;
+  }
+  li {
+    break-inside: avoid;
+  }
+}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <a href="index.html">← 메인으로</a>
+  <a href="assets/jeong-hyeongryun-resume.docx" download="정형륜 이력서.docx">DOCX 다운로드</a>
+  <button type="button" onclick="window.print()">PDF로 저장</button>
+</div>
+<div class="paper">
+
+<h1>정형륜 | AI 에이전트 개발자</h1>
+<p class="sub">업무 시스템을 6년 7개월간 고객사에 연동해 왔고, 지금은 LLM 에이전트를 실제로 돌아가는 서비스로 만듭니다.</p>
+<p class="sub">이메일: <a href="mailto:hrunj1230@naver.com">hrunj1230@naver.com</a></p>
+<p class="sub">GitHub <a href="https://github.com/hrunj1230">github.com/hrunj1230</a> · 웹 이력서 <a href="https://hrunj1230.github.io/yuta-resume">hrunj1230.github.io/yuta-resume</a></p>
+<h2>핵심 경험</h2>
+<ul>
+<li>LangGraph 단일 에이전트로 활동 기록 기반 일지 서비스를 만들었습니다. 도구 10개를 스스로 연쇄 호출해 수집·검색·작성·저장을 대화 한 번으로 처리합니다.</li>
+<li>체크포인터에 남은 도구 결과가 호출마다 다시 전송되는 문제를 찾았습니다. 저장 직전 정리 노드와 프롬프트 캐싱으로 요청당 새 과금 토큰을 11,742 → 531로 줄였습니다.</li>
+<li>Java로 전자증빙 솔루션을 개발하고 고객사 5곳의 그룹웨어에 연동했습니다. Oracle·MS-SQL·MySQL·Tibero 등 고객사마다 다른 DB와 시스템에 맞췄습니다.</li>
+</ul>
+<h2>기술 스택</h2>
+<p class="body">주력: Python·FastAPI·LangGraph — 에이전트 API와 도구 호출 설계. Java — 전자증빙 솔루션 개발·그룹웨어 연동(6년).</p>
+<p class="body">사용 경험: LangChain·ChromaDB·LangSmith·FastMCP·SQLite·Docker·AWS EC2·ECR·GitHub Actions</p>
+<p class="body">업무 시스템: Node.js·React·DB2(ERP 구축), Oracle·MS-SQL·MySQL·Tibero(고객사 DB 연동)</p>
+<h2>프로젝트</h2>
+<h3>나의 길라잡이 | 활동 기록 기반 일지 작성 에이전트</h3>
+<p class="meta">2026.07 ~ 2026.08 · 개인 프로젝트 · 설계·구현·평가·배포 전체 담당</p>
+<p class="body">기술: Python 3.12, FastAPI, LangGraph, gpt-5.4-nano, ChromaDB, SQLite, FastMCP, Docker, AWS EC2·ECR, GitHub Actions</p>
+<p class="body">자료: <a href="https://github.com/hrunj1230/yuta_logagent">github.com/hrunj1230/yuta_logagent</a></p>
+<ul>
+<li>임베딩 모델의 128토큰 한계로 원문의 75~89%가 잘리고 있었습니다. 일지 생성은 날짜 필터 조회라 임베딩이 필요 없다고 보고, 원본은 날짜별 md 파일로 두고 일지만 ChromaDB에 넣어 원문 손실을 없앴습니다.</li>
+<li>같은 대화 5회에 275,265토큰이 쓰였습니다. 도구 결과 10,321토큰이 대화 기록에 남아 반복 전송된 것이 원인이었습니다. 도구 트래픽 정리 노드와 시스템 프롬프트 캐싱으로 요청당 새 과금 토큰을 11,742 → 531로 줄였습니다.</li>
+<li>LangSmith로 6개 모델을 8개 시나리오에서 비교해 gpt-5.4-nano를 골랐습니다. 형식 준수 97.3%(Sonnet 5는 99.1%)에 응답 6.4초로, Sonnet 5(19.3초)보다 약 3배 빨랐습니다.</li>
+<li>GitHub Actions → ECR → EC2 배포를 OIDC와 SSM으로 구성했습니다. 장기 액세스 키 없이 배포하고, API 키는 SSM Parameter Store에서 주입합니다.</li>
+</ul>
+<h3>Yuta Chat Bot | 로컬 문서 근거 RAG 질의응답 API</h3>
+<p class="meta">2026.06 ~ 2026.07 · 개인 프로젝트</p>
+<p class="body">기술: FastAPI, LangChain(LCEL), Gemini 2.5 Flash, gemini-embedding-001, ChromaDB</p>
+<p class="body">자료: <a href="https://github.com/hrunj1230/Yuta_Chat_Bot">github.com/hrunj1230/Yuta_Chat_Bot</a></p>
+<ul>
+<li>로컬 마크다운 문서를 임베딩해 ChromaDB에 저장하고, 질문과 가까운 청크 3개를 근거로 답하는 POST /rag API를 구현했습니다.</li>
+<li>문서 경로와 모델명을 환경 변수로 분리해, 대상 문서를 바꿔도 코드 수정 없이 동작하도록 했습니다.</li>
+</ul>
+<h2>경력</h2>
+<h3>캐시맵 주식회사 | WEB/APP 개발 · 대리</h3>
+<p class="meta">2025.03 ~ 현재</p>
+<ul>
+<li>일신하이폴리 ERP 구축(2025.12 ~ 2026.04): DB2 위에서 Node·React·Python으로 화면과 서버를 개발했습니다.</li>
+<li>나비서 명함관리 시스템 구축(2025.09 ~ 2025.11): Java·MySQL</li>
+<li>한국마이콤 전자증빙 시스템 구축(2025.05 ~ 2025.08): Java·Tibero</li>
+</ul>
+<h3>주식회사 코코아 | WEB/APP 개발 · 대리</h3>
+<p class="meta">2019.11 ~ 2025.02</p>
+<ul>
+<li>캐시맵 전자증빙 솔루션 개발(2019.11 ~ 2021.12): Java·MySQL</li>
+<li>전자증빙 그룹웨어 연동: 아웃백(2021.11 ~ 2022.03, Oracle), BHC(2022.04 ~ 2022.08, MS-SQL)</li>
+<li>전자증빙 시스템 구축: 쇼박스(2024.05 ~ 2024.10, MS-SQL), 클래시스(2024.11 ~ 2025.04, MySQL·MS-SQL)</li>
+</ul>
+<h2>교육</h2>
+<p class="meta">카카오테크 부트캠프 AI 실무개발 | 2026.05 ~ 2026.11(수료 예정)</p>
+<p class="body">과정 중 LangGraph 일지 에이전트와 RAG 질의응답 API를 개인 프로젝트로 만들었습니다.</p>
+<p class="meta">부천대학교 컴퓨터소프트웨어공학과 | 학사 졸업</p>
+<p class="meta">부천대학교 컴퓨터정보보안과 | 전문학사 졸업</p>
+<h2>기타</h2>
+<p class="body">claude-daily-log: Claude 대화를 날짜별 마크다운 일지로 남기는 Claude Code 플러그인 공개 · <a href="https://github.com/hrunj1230/claude-daily-log-marketplace">github.com/hrunj1230/claude-daily-log-marketplace</a></p>
+<p class="body">ktb-git: 팀 Git-Flow 컨벤션(이슈·브랜치·커밋·PR)을 지키게 하는 에이전트 스킬과 CLI 공개 · <a href="https://github.com/hrunj1230/ktb-git">github.com/hrunj1230/ktb-git</a></p>
+</div>
+</body>
+</html>

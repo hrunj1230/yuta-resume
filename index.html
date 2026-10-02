@@ -25,14 +25,11 @@
     --indigo:#6B5BE6;
     --graphite:#39414B;
     --ball:#FFD24A;
-
     --display:"Bricolage Grotesque","Pretendard Variable",Pretendard,system-ui,sans-serif;
     --body:"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;
     --pixel:"Galmuri11","Galmuri9",ui-monospace,Menlo,monospace;
-
     --gutter:clamp(20px,4.5vw,88px);
   }
-
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
@@ -47,50 +44,40 @@
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
-
-  #stage{position:fixed; inset:0; width:100%; height:100%; z-index:1; pointer-events:none;}
-  .page{position:relative; z-index:1;}
-
+  #stage{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;}
+  .page{position:relative; z-index:2;}
   section{max-width:min(1280px, 92vw); margin:0 auto; padding:0 var(--gutter);}
   section.hero{max-width:none; width:100%;}
 
-  /* ---------- 히어로 ---------- */
   .hero{
     min-height:100svh;
     display:flex; flex-direction:column; justify-content:center;
-    padding-top:72px; padding-bottom:220px;
+    padding-top:108px; padding-bottom:220px;
   }
   .hero-copy{
-    position:relative;
-    width:100%;
-    max-width:720px;
+    position:relative; width:100%; max-width:720px;
     padding:8px 20px 8px 0;
     background:linear-gradient(90deg, rgba(233,238,242,.96) 0%, rgba(233,238,242,.88) 78%, rgba(233,238,242,0) 100%);
   }
-  .hero-id{
-    display:flex; gap:28px; align-items:flex-start;
-  }
+  .hero-id{display:flex; gap:28px; align-items:flex-start;}
   .id-card{
     position:relative; flex:none; width:168px; cursor:pointer;
     border:3px solid var(--ink); background:var(--paper-2);
     box-shadow:8px 8px 0 var(--indigo);
   }
   .id-card canvas, .id-card img{
-    display:block; width:100%; aspect-ratio:3/4; image-rendering:pixelated;
-    background:#d7c4b0;
+    display:block; width:100%; aspect-ratio:3/4; image-rendering:pixelated; background:#d7c4b0;
   }
   .id-card img{object-fit:cover; image-rendering:auto;}
   .id-card canvas[hidden], .id-card img[hidden]{display:none !important;}
   .id-hint{
     display:block; text-align:center; font-family:var(--pixel); font-size:10px;
-    color:var(--ink-60); padding:7px 6px 8px; border-top:3px solid var(--ink);
-    background:var(--paper);
+    color:var(--ink-60); padding:7px 6px 8px; border-top:3px solid var(--ink); background:var(--paper);
   }
   .id-card:hover .id-hint{color:var(--indigo);}
   .id-card input{position:absolute; width:0; height:0; opacity:0;}
   .hero-mark{
-    font-family:var(--pixel);
-    font-size:12px; color:var(--ink-60);
+    font-family:var(--pixel); font-size:12px; color:var(--ink-60);
     display:flex; align-items:center; gap:9px; margin-bottom:18px;
   }
   .pulse{width:8px;height:8px;background:var(--teal);flex:none;}
@@ -99,42 +86,23 @@
     font-size:clamp(36px, 4.6vw, 56px); line-height:.95;
     letter-spacing:-.035em; margin:0;
   }
-  .hero-role{
-    font-family:var(--pixel); font-size:14px; color:var(--indigo);
-    margin:10px 0 0;
-  }
-  .hero-sub{
-    font-size:14px; color:var(--ink-60); margin:8px 0 0; line-height:1.65; word-break:keep-all;
-  }
-  .hero p{
-    font-size:16px; line-height:1.7;
-    max-width:42ch; margin:16px 0 0;
-  }
+  .hero-role{font-family:var(--pixel); font-size:14px; color:var(--indigo); margin:10px 0 0;}
+  .hero-sub{font-size:14px; color:var(--ink-60); margin:8px 0 0; line-height:1.65; word-break:keep-all; overflow-wrap:anywhere;}
+  .hero p{font-size:16px; line-height:1.7; max-width:min(42ch,100%); margin:16px 0 0; word-break:keep-all; overflow-wrap:anywhere;}
   .hero-meta{margin-top:22px; display:flex; flex-wrap:wrap; gap:8px;}
-  .tag{
-    font-family:var(--pixel); font-size:12px; padding:8px 12px;
-    border:2px solid var(--ink); background:var(--paper-2);
-  }
+  .tag{font-family:var(--pixel); font-size:12px; padding:8px 12px; border:2px solid var(--ink); background:var(--paper-2);}
   .tag[data-c="clay"]{border-color:var(--clay);color:var(--clay);}
   .tag[data-c="teal"]{border-color:var(--teal);color:var(--teal);}
   .tag[data-c="indigo"]{border-color:var(--indigo);color:var(--indigo);}
-
   .hint{margin-top:36px; font-family:var(--pixel); font-size:11px; color:var(--ink-60); display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
   .kbd{border:2px solid var(--ink-30); padding:3px 7px; background:var(--paper-2);}
 
-  /* ---------- 공통 ---------- */
   .band{padding:clamp(64px,10vw,120px) 0;}
   .head{display:flex; align-items:baseline; gap:16px; margin-bottom:28px; flex-wrap:wrap;}
   .head h2{font-family:var(--display); font-weight:800; font-size:clamp(26px,3.2vw,48px); letter-spacing:-.02em; margin:0;}
   .head span{font-size:14px; color:var(--ink-60);}
+  .panel{background:rgba(243,246,248,.97); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px); border:3px solid var(--ink);}
 
-  .panel{
-    background:rgba(243,246,248,.97);
-    backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
-    border:3px solid var(--ink);
-  }
-
-  /* ---------- 플로팅 이력서 챗봇 ---------- */
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
   .chat-shell{
     --chat-edge:max(16px, env(safe-area-inset-right), env(safe-area-inset-bottom));
@@ -188,7 +156,6 @@
   .chat-close:hover{background:rgba(255,255,255,.24);}
   .chat-close svg{width:18px;height:18px;}
   .chat-body{min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:18px 16px 20px;background:#F5F6F8;scrollbar-width:thin;}
-  .chat-day{margin:0 0 18px;text-align:center;font-size:11px;color:#8A939B;}
   .chat-log{display:flex;flex-direction:column;gap:12px;}
   .chat-row{display:flex;align-items:flex-end;gap:8px;}
   .chat-row.is-user{justify-content:flex-end;}
@@ -198,39 +165,33 @@
   }
   .chat-bubble{max-width:82%;padding:11px 13px;border-radius:6px 17px 17px 17px;background:#fff;box-shadow:0 2px 10px rgba(23,36,46,.07);font-size:14px;line-height:1.58;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;}
   .chat-row.is-user .chat-bubble{border-radius:17px 6px 17px 17px;color:#fff;background:var(--indigo);box-shadow:none;}
-  .chat-intro{margin:4px 0 2px;padding:16px;border:1px solid #E2E5E9;border-radius:18px;background:#fff;}
-  .chat-intro strong{display:block;margin-bottom:7px;font-size:15px;}
-  .chat-intro p{margin:0;font-size:13px;line-height:1.6;color:#606B74;}
   .chat-chips{display:flex;flex-direction:column;align-items:flex-start;gap:7px;margin:4px 0 2px 38px;}
   .chat-chip{max-width:100%;padding:9px 12px;border:1px solid #D8DCE1;border-radius:999px;background:#fff;color:var(--ink);font-family:var(--body);font-size:12px;line-height:1.35;text-align:left;cursor:pointer;box-shadow:0 2px 7px rgba(23,36,46,.05);}
-  .chat-chip:hover{border-color:var(--indigo);color:var(--indigo);transform:translateY(-1px);}
+  .chat-chip:hover{border-color:var(--indigo);color:var(--indigo);}
   .chat-typing{display:flex;gap:4px;align-items:center;min-width:52px;height:38px;}
   .chat-typing i{width:6px;height:6px;border-radius:50%;background:#A3A9B0;animation:typing-dot .9s infinite ease-in-out;}
   .chat-typing i:nth-child(2){animation-delay:.14s;}.chat-typing i:nth-child(3){animation-delay:.28s;}
   @keyframes typing-dot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
   .chat-composer{padding:10px 14px 14px;border-top:1px solid #E3E6E9;background:#fff;}
-  .chat-form{display:flex;align-items:flex-end;gap:8px;padding:5px 5px 5px 14px;border:1.5px solid #D8DCE1;border-radius:18px;background:#fff;transition:border-color .15s,box-shadow .15s;}
+  .chat-form{display:flex;align-items:flex-end;gap:8px;padding:5px 5px 5px 14px;border:1.5px solid #D8DCE1;border-radius:18px;background:#fff;}
   .chat-form:focus-within{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(107,91,230,.12);}
   .chat-form textarea{flex:1;min-width:0;max-height:92px;resize:none;border:0;outline:0;padding:7px 0;background:transparent;color:var(--ink);font:13px/1.5 var(--body);}
   .chat-form textarea::placeholder{color:#929AA1;}
   .chat-send{width:36px;height:36px;flex:none;border:0;border-radius:13px;display:grid;place-items:center;cursor:pointer;color:#fff;background:var(--indigo);}
   .chat-send:hover{background:#5849D2;}.chat-send:disabled{cursor:default;opacity:.42;}
   .chat-send svg{width:17px;height:17px;}
-  .chat-demo-note{margin:8px 4px 0;text-align:center;font-size:10px;line-height:1.4;color:#929AA1;}
   .chat-launcher{
     position:fixed;right:var(--chat-edge);bottom:var(--chat-edge);width:66px;height:66px;border:2px solid var(--ink);border-radius:23px;display:grid;place-items:center;
-    color:#fff;background:var(--indigo);box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .18s ease,background .18s;
+    color:#fff;background:var(--indigo);box-shadow:5px 5px 0 var(--ink);cursor:pointer;
     pointer-events:auto;
   }
   .chat-launcher:hover{transform:translateY(-2px);background:#5849D2;}
   .chat-launcher svg{width:29px;height:29px;}
   .chat-launcher .icon-close{display:none;}
-  .chat-badge{position:absolute;right:-5px;top:-6px;min-width:21px;height:21px;padding:0 5px;display:grid;place-items:center;border:2px solid #fff;border-radius:999px;background:var(--clay);font:10px var(--pixel);}
   .chat-shell.is-open .chat-launcher{display:none;}
   .chat-launcher:focus-visible,.chat-close:focus-visible,.chat-chip:focus-visible,.chat-send:focus-visible{outline:3px solid var(--teal);outline-offset:3px;}
   .note{font-size:12px; color:var(--ink-60); margin-top:12px;}
 
-  /* ---------- 하는 일 ---------- */
   .doing{display:grid; grid-template-columns:repeat(3,1fr); border:3px solid var(--ink);}
   .doing > div{padding:26px 24px; background:rgba(243,246,248,.97); backdrop-filter:blur(7px);}
   .doing > div + div{border-left:3px solid var(--ink);}
@@ -238,7 +199,6 @@
   .doing p{margin:0; font-size:14.5px; line-height:1.75;}
   .bar{height:6px; width:46px; margin-bottom:16px;}
 
-  /* ---------- 프로젝트 ---------- */
   .work{display:flex; flex-direction:column; gap:26px;}
   .card{padding:28px 28px 24px;}
   .card.a{box-shadow:8px 8px 0 var(--clay);}
@@ -253,7 +213,6 @@
   .stack{display:flex; flex-wrap:wrap; gap:7px; margin-top:20px;}
   .stack span{font-family:var(--pixel); font-size:11px; padding:5px 9px; border:2px solid var(--ink-30); color:var(--ink-60);}
 
-  /* ---------- 기록 ---------- */
   .path{border-left:3px solid var(--ink); margin-left:6px; padding-left:0;}
   .path li{list-style:none; padding:0 0 30px 26px; position:relative;}
   .path li::before{content:""; position:absolute; left:-9px; top:6px; width:15px; height:15px; background:var(--paper); border:3px solid var(--ink);}
@@ -261,22 +220,47 @@
   .path h4{font-family:var(--display); font-size:18px; margin:0 0 6px;}
   .path p{margin:0; font-size:14.5px; line-height:1.75; max-width:58ch;}
 
-  /* ---------- 캐릭터 소개 ---------- */
   .cast{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
   .cast div{padding:16px; border:3px solid var(--ink); background:rgba(243,246,248,.97); text-align:center;}
   .cast canvas{image-rendering:pixelated; display:block; margin:0 auto 12px;}
   .cast strong{font-family:var(--pixel); font-size:14px; display:block; margin-bottom:8px;}
   .cast p{margin:0; font-size:12.5px; line-height:1.65; color:var(--ink-60);}
 
-  /* ---------- 연락 ---------- */
   .contact{padding-bottom:220px;}
   .contact h2{font-family:var(--display); font-weight:800; font-size:clamp(30px,5vw,56px); letter-spacing:-.03em; margin:0 0 22px; line-height:1.05;}
   .links{display:flex; flex-wrap:wrap; gap:12px;}
   .links a{font-size:15px; text-decoration:none; color:var(--ink); border:3px solid var(--ink); padding:11px 18px; background:var(--paper-2);}
   .links a:hover{background:var(--ink); color:var(--paper);}
   .links a:focus-visible{outline:3px solid var(--indigo); outline-offset:3px;}
-
   footer{border-top:3px solid var(--ink); margin-top:60px; padding:20px 0 0; font-family:var(--pixel); font-size:11px; color:var(--ink-60); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+
+  .pace-bar{
+    position:fixed; top:0; left:0; right:0; z-index:20;
+    display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px 14px;
+    min-height:46px; padding:8px 16px;
+    background:rgba(243,246,248,.94); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border-bottom:3px solid var(--ink);
+    font-family:var(--pixel); font-size:12px; color:var(--ink);
+  }
+  .pace-bar label{display:flex; align-items:center; gap:10px; cursor:pointer;}
+  .pace-bar .pace-lab{flex:none;}
+  .pace-bar input[type="range"]{
+    -webkit-appearance:none; appearance:none;
+    width:min(220px, 42vw); height:10px; margin:0;
+    background:var(--paper-2); border:2px solid var(--ink); cursor:pointer;
+  }
+  .pace-bar input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none;
+    width:16px; height:16px; background:var(--indigo);
+    border:2px solid var(--ink); cursor:pointer;
+  }
+  .pace-bar input[type="range"]::-moz-range-thumb{
+    width:16px; height:16px; background:var(--indigo);
+    border:2px solid var(--ink); border-radius:0; cursor:pointer;
+  }
+  .pace-bar .pace-ends{color:var(--ink-60);}
+  .pace-bar .pace-val{min-width:3.2em; color:var(--indigo);}
+  .pace-bar input[type="range"]:focus-visible{outline:3px solid var(--teal); outline-offset:3px;}
 
   .dock{
     position:fixed; left:50%; transform:translateX(-50%); bottom:18px; z-index:5;
@@ -290,31 +274,32 @@
     .chat-shell.is-open ~ .dock{left:16px; transform:none;}
   }
 
-  .haul{
-    overflow:hidden;
-    padding:0 12px 14px 0;
-  }
+  .haul{overflow:hidden; padding:0 12px 14px 0;}
   .haul.is-placed{overflow:visible;}
-  .lift{
-    transform:translate3d(0, var(--drag, 0px), 0);
-    opacity:var(--shown, 1);
-    will-change:transform, opacity;
-  }
+  .lift{transform:translate3d(0, var(--drag, 0px), 0); opacity:var(--shown, 1); will-change:transform, opacity;}
 
   @media (max-width:900px){
-    .hero{padding-bottom:96px;}
+    .hero{padding-bottom:220px;}
     .hero-copy{max-width:none; padding-right:0;}
     .hero-id{flex-direction:column; gap:18px;}
     .id-card{width:140px;}
     h1{font-size:clamp(34px, 9vw, 48px);}
   }
   @media (max-width:860px){
+    #stage{display:none;}
+    .hero{min-height:0; padding-top:48px; padding-bottom:120px;}
     .doing{grid-template-columns:1fr;}
     .doing > div + div{border-left:0; border-top:3px solid var(--ink);}
     .cast{grid-template-columns:repeat(2,1fr);}
     .dock{display:none;}
+    .pace-bar{display:none;}
+    .hint{display:none;}
+    .haul{overflow:visible; padding:0;}
+    .lift{transform:none;}
   }
   @media (max-width:560px){
+    .hero{padding-bottom:96px;}
+    .hint{margin-top:22px; padding-right:84px;}
     .chat-shell{--chat-edge:max(12px,env(safe-area-inset-bottom));}
     .chat-panel,
     .chat-shell.is-open .chat-panel{
@@ -355,9 +340,19 @@
 
 <div class="page">
 
+  <div class="pace-bar" role="region" aria-label="캐릭터 움직임 속도">
+    <span class="pace-ends">느림</span>
+    <label>
+      <span class="pace-lab">속도</span>
+      <input id="pace" type="range" min="0.4" max="2.4" step="0.1" value="1" />
+    </label>
+    <span class="pace-ends">빠름</span>
+    <span class="pace-val" id="pace-val" aria-live="polite">1.0×</span>
+  </div>
+
   <section class="hero" id="home">
     <div class="hero-copy">
-      <div class="hero-mark"><span class="pulse"></span> 에이전트 4마리가 놀고 있습니다 · 내리면 경력을 들어올립니다</div>
+      <div class="hero-mark"><span class="pulse"></span> 에이전트 4마리가 각자 맡은 일을 하고 있습니다 · 내리면 한 명씩 올립니다</div>
       <div class="hero-id">
         <label class="id-card" title="클릭하면 사진을 넣을 수 있습니다">
           <input id="portrait-file" type="file" accept="image/*" />
@@ -381,7 +376,7 @@
       <div class="hint">
         <span class="kbd">클릭</span> 캐릭터를 건드려 보세요
         <span class="kbd">드래그</span> 공을 던질 수 있습니다
-        <span class="kbd">스크롤</span> 넷이 아래 카드를 끌어올립니다
+        <span class="kbd">스크롤</span> 맡은 사람이 카드를 올립니다
       </div>
     </div>
   </section>
@@ -486,7 +481,7 @@
     <div class="links lift" data-lift="contact">
       <a href="mailto:hrunj1230@naver.com">hrunj1230@naver.com</a>
       <a href="https://github.com/hrunj1230" target="_blank" rel="noopener">GitHub</a>
-      <a href="#" target="_blank" rel="noopener">이력서 PDF</a>
+      <a href="resume.html">이력서 보기</a>
     </div>
     </div>
     <footer>
@@ -509,12 +504,7 @@
       </button>
     </header>
     <div class="chat-body" id="chat-body">
-      <p class="chat-day">오늘</p>
       <div class="chat-log" id="chat-log" role="log" aria-live="polite" aria-relevant="additions text"></div>
-      <div class="chat-intro">
-        <strong>무엇이 궁금하세요?</strong>
-        <p>프로젝트, 경력, 기술 스택처럼 채용 담당자가 자주 묻는 내용을 골라보세요.</p>
-      </div>
       <div class="chat-chips" id="chat-chips" aria-label="추천 질문"></div>
     </div>
     <footer class="chat-composer">
@@ -525,14 +515,12 @@
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m5 12 14-7-4.7 14-2.9-5.4L5 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m11.4 13.6 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
       </form>
-      <p class="chat-demo-note">미리 준비된 답변으로 동작하는 데모입니다</p>
     </footer>
   </section>
 
   <button class="chat-launcher" id="chat-launcher" type="button" aria-controls="resume-chat" aria-expanded="false" aria-label="이력서 챗봇 열기">
     <svg class="icon-chat" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M5.5 5.5h13v10h-7L7 19v-3.5H5.5v-10Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 9h7M8.5 12h4.5" stroke="#6B5BE6" stroke-width="1.8" stroke-linecap="round"/></svg>
     <svg class="icon-close" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m7 7 10 10M17 7 7 17" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
-    <span class="chat-badge" aria-hidden="true">1</span>
   </button>
 </aside>
 
@@ -541,6 +529,7 @@
   <a href="#resume-chat" data-open-chat>질문</a>
   <a href="#work">프로젝트</a>
   <a href="#path">기록</a>
+  <a href="resume.html">이력서</a>
   <a href="#contact">연락</a>
 </nav>
 
@@ -562,9 +551,11 @@ const PAL = {
 const CHARS = [
   {
     name:'아미', color:'#E8663A',
+    job:'문서',
+    hauls:['doing','cast'],
     blinkRows:[4,5], blinkFill:'O',
     lines:['이 사람 문서 정리 하나는 진짜 잘해요','스펙부터 쓰고 코드를 씁니다','같이 일하면 편할 거예요'],
-    liftLine:'내가 당길게',
+    liftLine:'하는 일은 제가 올릴게요',
     maps:{
 walk0:`
 ..................
@@ -629,9 +620,11 @@ k....koOOOOOok...k
   },
   {
     name:'노바', color:'#12A17E',
+    job:'초안',
+    hauls:['work-a'],
     blinkRows:[4,5], blinkFill:'T',
     lines:['초안은 제가, 판단은 저 사람이','프로토타입 하루면 나와요','JAVA 얘기 시키면 안 멈춰요'],
-    liftLine:'자, 끌어올려',
+    liftLine:'전자증빙, 제가 당길게요',
     maps:{
 walk0:`
 ........kk........
@@ -696,9 +689,11 @@ k......tk........k
   },
   {
     name:'비트', color:'#6B5BE6',
+    job:'자료',
+    hauls:['work-b'],
     blinkRows:[3,4], blinkFill:'I',
     lines:['전자증빙 연동 물어보세요','DB가 바뀌어도 따라간대요','자료는 제가 물어옵니다'],
-    liftLine:'잡았어요',
+    liftLine:'ERP는 제가 챙길게요',
     maps:{
 walk0:`
 ......kkkkkk......
@@ -763,9 +758,11 @@ k...kkIIIIIIIkk..k
   },
   {
     name:'카이', color:'#39414B',
+    job:'마무리',
+    hauls:['path','contact'],
     blinkRows:[4,5,6,7], blinkFill:'G',
     lines:['채용하세요','공 좀 그만 던져요','...좋은 사람입니다'],
-    liftLine:'...',
+    liftLine:'기록은 제가',
     maps:{
 walk0:`
 ........kk........
@@ -977,6 +974,25 @@ bbbbbbbbbbbbbbbbbbbbbbbb
   resize();
   window.addEventListener('resize', resize);
 
+  const PACE_KEY = 'yuta-resume-pace';
+  const paceInput = document.getElementById('pace');
+  const paceVal = document.getElementById('pace-val');
+  let pace = 1;
+  function setPace(n){
+    pace = Math.min(2.4, Math.max(0.4, n));
+    if(paceInput) paceInput.value = String(pace);
+    if(paceVal) paceVal.textContent = pace.toFixed(1) + '×';
+    try{ localStorage.setItem(PACE_KEY, String(pace)); }catch(e){}
+  }
+  try{
+    const saved = parseFloat(localStorage.getItem(PACE_KEY));
+    if(Number.isFinite(saved)) setPace(saved);
+    else setPace(parseFloat(paceInput && paceInput.value) || 1);
+  }catch(e){ setPace(1); }
+  if(paceInput){
+    paceInput.addEventListener('input', ()=> setPace(parseFloat(paceInput.value) || 1));
+  }
+
   const rand=(a,b)=>a+Math.random()*(b-a);
   const halfW = () => (SPR_W*PX)/2;
   const halfH = () => (SPR_H*PX)/2;
@@ -988,30 +1004,44 @@ bbbbbbbbbbbbbbbbbbbbbbbb
       const copy = document.querySelector('.hero-copy');
       if(copy){
         const r = copy.getBoundingClientRect();
-        return Math.min(W - 140, Math.max(r.right + 28, W*0.42));
+        return Math.min(W - 180, Math.max(r.right + 28, W*0.38));
       }
     }
-    return W >= 1200 ? W*0.48 : Math.min(W*0.55, 820);
+    return 24;
+  }
+  function chatRect(){
+    const shell = document.getElementById('resume-chatbot');
+    if(!shell || !shell.classList.contains('is-open') || W < 560) return null;
+    const panel = document.getElementById('resume-chat');
+    if(!panel) return null;
+    const r = panel.getBoundingClientRect();
+    if(r.width < 40) return null;
+    return r;
   }
   function chatLeft(){
-    const shell = document.getElementById('resume-chatbot');
-    if(!shell || !shell.classList.contains('is-open') || W < 560) return W;
-    const panel = document.getElementById('resume-chat');
-    if(panel){
-      const r = panel.getBoundingClientRect();
-      if(r.width > 40) return Math.max(120, r.left - 52);
-    }
-    return W - Math.min(400, W - 32) - 36;
+    const r = chatRect();
+    return r ? Math.max(120, r.left - 36) : W;
   }
   function playAllowed(x,y){
-    if(x > chatLeft()) return false;
-    if(W < 760) return y > H*0.82;
-    return x > playLeft() && y > H*0.22 && y < H-72;
+    const chat = chatRect();
+    if(chat){
+      const pad = 20;
+      if(x > chat.left - pad && x < chat.right + pad && y > chat.top - pad && y < chat.bottom + pad) return false;
+    }
+    if(W < 760) return y > Math.min(H*0.90, H - 120);
+    const copy = document.querySelector('.hero-copy');
+    let left = 24;
+    if(copy && window.scrollY < 90){
+      const r = copy.getBoundingClientRect();
+      if(y < r.bottom + 16) left = Math.min(W - 160, r.right + 24);
+    }
+    return x > left && y > H*0.22 && y < H-72;
   }
 
   const agents = CHARS.map((c,i)=>({
     def:c, idx:i,
-    x: W*(0.66+i*0.07), y: H*rand(0.78,0.90),
+    x: (W < 760 ? 36 + i*72 : Math.min(W*0.58, playLeft()+40) + i*110),
+    y: W < 760 ? H*0.92 : H*0.82 + (i%2)*22,
     vx: rand(-30,30), vy: rand(-16,16),
     tx:0, ty:0, retarget:0,
     face:1, frame:0, frameT:0, pose:'walk0',
@@ -1020,21 +1050,24 @@ bbbbbbbbbbbbbbbbbbbbbbbb
     hop:0, hv:0, latched:false
   }));
 
-  const ball = { x:W*0.78, y:H*0.82, vx:70, vy:-40, spin:0 };
+  const ball = { x:W*0.78, y:H*0.86, vx:22, vy:-8, spin:0 };
   const pointer = { x:-999, y:-999, grab:false };
 
   function pickTarget(a){
+    const left = W < 760 ? 24 : 40;
+    const right = Math.max(left + 80, W - 80);
+    const y0 = W < 760 ? H*0.90 : H*0.70;
     let x, y, tries=0;
     do{
-      x = rand(W*0.08, Math.max(W*0.2, chatLeft() - 40));
-      y = rand(H*0.40, H*0.90);
+      x = rand(left, right);
+      y = rand(y0, H*0.94);
       tries++;
     } while(!playAllowed(x,y) && tries<14);
     if(!playAllowed(x,y)){
-      x = rand(Math.min(playLeft() + 40, chatLeft() - 80), Math.max(playLeft() + 80, chatLeft() - 40));
-      y = rand(H*0.82, H*0.92);
+      x = (left + right) / 2;
+      y = (y0 + H*0.94) / 2;
     }
-    a.tx=x; a.ty=y; a.retarget=rand(2.2, 5.5);
+    a.tx=x; a.ty=y; a.retarget=rand(5, 9);
   }
   agents.forEach(pickTarget);
 
@@ -1054,7 +1087,7 @@ bbbbbbbbbbbbbbbbbbbbbbbb
 
   function resetHauls(){
     hauls.forEach(h=>{
-      h.max = Math.min(320, Math.max(170, h.box.offsetHeight * 0.68));
+      h.max = Math.min(200, Math.max(56, h.box.offsetHeight - 148));
       h.drag = h.max;
       h.placed = false;
       h.pulling = false;
@@ -1062,10 +1095,14 @@ bbbbbbbbbbbbbbbbbbbbbbbb
     });
   }
   resetHauls();
+  if(W < 760){
+    hauls.forEach(h=>{ h.drag=0; h.placed=true; applyHaul(h); });
+  }
   window.addEventListener('resize', ()=>{
     hauls.forEach(h=>{
-      h.max = Math.min(320, Math.max(170, h.box.offsetHeight * 0.68));
-      if(h.placed) h.drag = 0;
+      h.max = Math.min(200, Math.max(56, h.box.offsetHeight - 148));
+      if(W < 760){ h.drag=0; h.placed=true; }
+      else if(h.placed) h.drag = 0;
       else if(!h.pulling) h.drag = h.max;
       applyHaul(h);
     });
@@ -1083,15 +1120,18 @@ bbbbbbbbbbbbbbbbbbbbbbbb
     return null;
   }
 
-  function grabSlots(h){
+  function ownerIndex(h){
+    const idx = CHARS.findIndex(c => (c.hauls||[]).includes(h.key));
+    return idx < 0 ? (hauls.indexOf(h) % CHARS.length) : idx;
+  }
+
+  function grabSlot(h){
     const r = h.stage.getBoundingClientRect();
     const top = r.top + h.drag;
-    const insetL = Math.min(Math.max(r.width*0.10, 40), 120);
-    const insetR = Math.min(Math.max(r.width*0.08, 28), 72);
-    return [0,1,2,3].map(i=>({
-      x: r.left + insetL + (i/3)*(Math.max(40, r.width - insetL - insetR)),
+    return {
+      x: r.left + r.width * 0.5,
       y: top - halfH() + PX*3
-    }));
+    };
   }
 
   function drawRopes(h){
@@ -1155,7 +1195,7 @@ bbbbbbbbbbbbbbbbbbbbbbbb
     if(a.hovered && !a.bubble){
       ctx.font='11px "Galmuri11",monospace';
       ctx.textAlign='center'; ctx.fillStyle='rgba(23,36,46,.6)';
-      ctx.fillText(a.def.name, a.x, a.y + h/2 + PX*4);
+      ctx.fillText(a.def.name+' · '+a.def.job, a.x, a.y + h/2 + PX*4);
     }
     if(a.bubble) drawBubble(a);
   }
@@ -1182,6 +1222,7 @@ bbbbbbbbbbbbbbbbbbbbbbbb
   }
 
   function step(dt){
+    dt *= pace;
     if(window.scrollY < 36){
       let any = false;
       hauls.forEach(h=>{
@@ -1194,95 +1235,101 @@ bbbbbbbbbbbbbbbbbbbbbbbb
 
     const cargo = activeHaul();
     const carrying = !!cargo;
-    const slotList = cargo ? grabSlots(cargo) : null;
+    const lifter = cargo ? agents[ownerIndex(cargo)] : null;
+    const slot = cargo ? grabSlot(cargo) : null;
 
     ball.x += ball.vx*dt; ball.y += ball.vy*dt;
-    ball.vx *= carrying ? 0.96 : 0.994;
-    ball.vy *= carrying ? 0.96 : 0.994;
-    ball.spin += ball.vx*dt*0.03;
+    ball.vx *= carrying ? 0.97 : 0.985;
+    ball.vy *= carrying ? 0.97 : 0.985;
+    ball.spin += ball.vx*dt*0.02;
     const pad = 30;
-    if(ball.x < pad){ ball.x=pad; ball.vx=Math.abs(ball.vx)*0.82; }
-    if(ball.x > W-pad){ ball.x=W-pad; ball.vx=-Math.abs(ball.vx)*0.82; }
-    if(ball.y < H*0.25){ ball.y=H*0.25; ball.vy=Math.abs(ball.vy)*0.82; }
-    if(ball.y > H-pad){ ball.y=H-pad; ball.vy=-Math.abs(ball.vy)*0.82; }
+    if(ball.x < pad){ ball.x=pad; ball.vx=Math.abs(ball.vx)*0.6; }
+    if(ball.x > W-pad){ ball.x=W-pad; ball.vx=-Math.abs(ball.vx)*0.6; }
+    if(ball.y < H*0.55){ ball.y=H*0.55; ball.vy=Math.abs(ball.vy)*0.6; }
+    if(ball.y > H-pad){ ball.y=H-pad; ball.vy=-Math.abs(ball.vy)*0.6; }
     if(!carrying && !playAllowed(ball.x, ball.y)){
       if(W < 760){
         ball.y = Math.max(ball.y, H*0.82);
-        if(ball.vy < 0) ball.vy = Math.abs(ball.vy)*0.7;
+        if(ball.vy < 0) ball.vy = Math.abs(ball.vy)*0.5;
       } else {
         const gateX = playLeft();
-        if(ball.x < gateX){ ball.x = gateX; ball.vx = Math.abs(ball.vx)*0.7; }
-        if(ball.y < H*0.40){ ball.y = H*0.40; ball.vy = Math.abs(ball.vy)*0.7; }
+        if(ball.x < gateX){ ball.x = gateX; ball.vx = Math.abs(ball.vx)*0.5; }
+        if(ball.y < H*0.62){ ball.y = H*0.62; ball.vy = Math.abs(ball.vy)*0.5; }
       }
     }
 
     if(pointer.grab){
-      ball.vx = (pointer.x-ball.x)*8;
-      ball.vy = (pointer.y-ball.y)*8;
+      ball.vx = (pointer.x-ball.x)*5;
+      ball.vy = (pointer.y-ball.y)*5;
       ball.x = pointer.x; ball.y = pointer.y;
     }
-    const speed = Math.hypot(ball.vx, ball.vy);
+
+    let nearestBall = null, nearestBallD = 1e9;
+    if(!carrying && playAllowed(ball.x, ball.y)){
+      agents.forEach(a=>{
+        const d = Math.hypot(ball.x-a.x, ball.y-a.y);
+        if(d < nearestBallD){ nearestBallD=d; nearestBall=a; }
+      });
+    }
 
     agents.forEach((a,i)=>{
       let tx, ty, urgency;
+      const isLifter = carrying && a === lifter;
 
-      if(carrying){
-        const s = slotList[i];
-        tx=s.x; ty=s.y;
+      if(isLifter){
+        tx=slot.x; ty=slot.y;
         const d = Math.hypot(a.x-tx, a.y-ty);
-        const rush = d > 90 ? 12 : 8;
+        const rush = d > 120 ? 8.5 : 5.2;
         a.x += (tx-a.x)*Math.min(1, rush*dt);
         a.y += (ty-a.y)*Math.min(1, rush*dt);
-        a.vx = (tx-a.x)*5;
-        a.vy = (ty-a.y)*5;
-        a.latched = d < 56;
+        a.vx = (tx-a.x)*4.4;
+        a.vy = (ty-a.y)*4.4;
+        a.latched = d < 72;
         a.pose = a.latched ? 'lift' : (a.frame ? 'walk1' : 'walk0');
         if(Math.abs(tx-a.x) > 6) a.face = tx > a.x ? 1 : -1;
         urgency = 0;
       } else {
         a.latched = false;
         a.pose = 'walk0';
-        const db = Math.hypot(ball.x-a.x, ball.y-a.y);
-        if((db < 280 || speed > 60) && playAllowed(ball.x, ball.y)){ tx=ball.x; ty=ball.y; urgency=1; }
-        else {
-          a.retarget -= dt;
-          if(a.retarget<=0) pickTarget(a);
-          tx=a.tx; ty=a.ty; urgency=0.85;
+        a.retarget -= dt;
+        if(a.retarget<=0) pickTarget(a);
+        tx=a.tx; ty=a.ty; urgency=0.35;
+        if(a === nearestBall && nearestBallD < 110){
+          tx=ball.x; ty=ball.y; urgency=0.45;
         }
         if(!playAllowed(a.x, a.y)){
-          if(W < 760) ty = Math.max(ty, H*0.82);
+          if(W < 760) ty = Math.max(ty, H*0.90);
           else {
-            tx = Math.max(tx, playLeft() + 80);
-            ty = Math.min(Math.max(ty, H*0.48), H-80);
-            urgency = 1;
+            ty = Math.min(Math.max(ty, H*0.70), H-80);
+            urgency = 0.55;
           }
         }
       }
 
       const dp = Math.hypot(pointer.x-a.x, pointer.y-a.y);
       a.hovered = dp < halfW()*1.3;
-      if(!carrying && dp < 170){ tx=(tx+pointer.x)/2; ty=(ty+pointer.y)/2; }
+      if(!isLifter && dp < 70){ tx=(tx+pointer.x)/2; ty=(ty+pointer.y)/2; }
 
       if(a.latched){
-        a.hop = 3 + Math.abs(Math.sin(performance.now()/160 + i))*4;
-      } else if(!carrying){
+        a.hop = 1 + Math.abs(Math.sin(performance.now()/420 + i))*1.6;
+      } else if(!isLifter){
         const ang = Math.atan2(ty-a.y, tx-a.x);
-        a.vx += Math.cos(ang)*260*urgency*dt;
-        a.vy += Math.sin(ang)*260*urgency*dt;
+        a.vx += Math.cos(ang)*70*urgency*dt;
+        a.vy += Math.sin(ang)*70*urgency*dt;
 
         agents.forEach((b,j)=>{
           if(i===j) return;
           const dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
-          if(d < halfW()*2.2 && d>0.01){ a.vx += (dx/d)*200*dt; a.vy += (dy/d)*200*dt; }
+          if(d < halfW()*2.6 && d>0.01){ a.vx += (dx/d)*90*dt; a.vy += (dy/d)*90*dt; }
         });
 
-        a.vx *= 0.96; a.vy *= 0.96;
+        a.vx *= 0.94; a.vy *= 0.94;
         let sp = Math.hypot(a.vx,a.vy);
-        const max = 190;
+        const max = 58;
         if(sp>max){ a.vx=a.vx/sp*max; a.vy=a.vy/sp*max; sp=max; }
-        if(sp < 55 && (tx!==undefined)){
+        if(sp < 16 && (tx!==undefined)){
           const ang2 = Math.atan2(ty-a.y, tx-a.x);
-          a.vx += Math.cos(ang2)*55; a.vy += Math.sin(ang2)*55;
+          a.vx += Math.cos(ang2)*16; a.vy += Math.sin(ang2)*16;
         }
 
         a.x += a.vx*dt; a.y += a.vy*dt;
@@ -1290,43 +1337,50 @@ bbbbbbbbbbbbbbbbbbbbbbbb
 
       a.x = Math.max(halfW(), Math.min(W-halfW(), a.x));
       a.y = Math.max(halfH(), Math.min(H-halfH(), a.y));
-      if(!carrying && W >= 760 && a.x < playLeft() + halfW()){
-        a.x = playLeft() + halfW() + 8;
-        if(a.vx < 0) a.vx = Math.abs(a.vx);
+      if(!isLifter && W >= 760){
+        const copy = document.querySelector('.hero-copy');
+        const copyBottom = copy && window.scrollY < 90 ? copy.getBoundingClientRect().bottom + 16 : 0;
+        if(a.y < copyBottom && a.x < playLeft() + halfW()){
+          a.x = playLeft() + halfW() + 8;
+          if(a.vx < 0) a.vx = Math.abs(a.vx);
+        }
       }
-      if(!carrying && W < 760 && a.y < H*0.84){
-        a.y = H*0.84;
+      if(!isLifter && W < 760 && a.y < H*0.90){
+        a.y = H*0.90;
         if(a.vy < 0) a.vy = Math.abs(a.vy);
       }
-      const chatBound = chatLeft();
-      if(!carrying && a.x > chatBound - halfW()){
-        a.x = Math.max(halfW() + 4, chatBound - halfW() - 8);
-        if(a.vx > 0) a.vx = -Math.abs(a.vx);
+      const chat = chatRect();
+      if(!isLifter && chat){
+        const pad = 20 + halfW();
+        if(a.x > chat.left - pad && a.x < chat.right + pad && a.y > chat.top - pad && a.y < chat.bottom + pad){
+          a.x = chat.left - pad - 8;
+          if(a.vx > 0) a.vx = -Math.abs(a.vx);
+        }
       }
 
       if(Math.abs(a.vx) > 8) a.face = a.vx > 0 ? 1 : -1;
 
       const sp = Math.hypot(a.vx,a.vy);
-      a.frameT += dt * (0.6 + sp/170*6);
-      if(a.frameT > 0.22){ a.frame = a.frame ? 0 : 1; a.frameT = 0; }
+      a.frameT += dt * (0.35 + sp/90*2.2);
+      if(a.frameT > 0.34){ a.frame = a.frame ? 0 : 1; a.frameT = 0; }
       if(!a.latched) a.pose = a.frame ? 'walk1' : 'walk0';
 
-      if(!carrying){
+      if(!isLifter){
         const db = Math.hypot(ball.x-a.x, ball.y-a.y);
         if(db < halfW() + ballR()){
           const k = Math.atan2(ball.y-a.y, ball.x-a.x);
-          ball.vx = Math.cos(k)*rand(240,350);
-          ball.vy = Math.sin(k)*rand(200,300);
-          a.hv = 220;
-          if(Math.random()<0.26) say(a, ['골!','받아요','내 공','좋았어'][Math.floor(Math.random()*4)], 1.4);
+          ball.vx = Math.cos(k)*rand(90,140);
+          ball.vy = Math.sin(k)*rand(70,110);
+          a.hv = 90;
+          if(Math.random()<0.16) say(a, ['받아','내 공'][Math.floor(Math.random()*2)], 1.1);
         }
       }
 
-      a.hv -= 950*dt;
+      a.hv -= 700*dt;
       a.hop += a.hv*dt;
       if(a.hop < 0){ a.hop=0; a.hv=0; }
-      if(a.latched && a.hv===0 && a.hop < 8){
-        a.hop = 3 + Math.abs(Math.sin(performance.now()/160 + i))*4;
+      if(a.latched && a.hv===0 && a.hop < 3){
+        a.hop = 1 + Math.abs(Math.sin(performance.now()/420 + i))*1.6;
       }
 
       a.blink -= dt;
@@ -1336,25 +1390,21 @@ bbbbbbbbbbbbbbbbbbbbbbbb
       if(a.bubbleT>0){ a.bubbleT -= dt; if(a.bubbleT<=0) a.bubble=null; }
     });
 
-    if(cargo && !cargo.placed){
-      const latched = agents.filter(a=>a.latched).length;
-      if(latched >= 2){
-        if(!cargo.pulling){
-          cargo.pulling = true;
-          agents.forEach((a,i)=>{
-            a.hv = 280;
-            if(a.latched) setTimeout(()=>{ say(a, a.def.liftLine, 1.6); }, 30+i*70);
-          });
-        }
-        cargo.drag = Math.max(0, cargo.drag - (70 + latched*90)*dt);
+    if(cargo && !cargo.placed && lifter && lifter.latched){
+      if(!cargo.pulling){
+        cargo.pulling = true;
+        lifter.hv = 120;
+        say(lifter, lifter.def.liftLine, 1.8);
+      }
+      cargo.drag = Math.max(0, cargo.drag - 240*dt);
+      applyHaul(cargo);
+      if(cargo.drag <= 0){
+        cargo.drag = 0;
+        cargo.placed = true;
+        cargo.pulling = false;
         applyHaul(cargo);
-        if(cargo.drag <= 0){
-          cargo.drag = 0;
-          cargo.placed = true;
-          cargo.pulling = false;
-          applyHaul(cargo);
-          agents.forEach(a=>{ a.hv = 240; a.latched=false; });
-        }
+        lifter.hv = 80;
+        lifter.latched = false;
       }
     }
   }
@@ -1391,7 +1441,7 @@ bbbbbbbbbbbbbbbbbbbbbbbb
   window.addEventListener('pointermove', e=>{ const p=pos(e); pointer.x=p.x; pointer.y=p.y; }, {passive:true});
   window.addEventListener('pointerleave', ()=>{ pointer.x=-999; pointer.y=-999; });
   window.addEventListener('pointerdown', e=>{
-    if(e.target.closest('a,button,input,textarea,.dock,.chat-shell,.id-card')) return;
+    if(e.target.closest('a,button,input,textarea,.dock,.chat-shell,.id-card,.pace-bar')) return;
     const p = pos(e);
     for(const a of agents){
       if(Math.abs(p.x-a.x) < halfW() && Math.abs(p.y-a.y) < halfH()){
@@ -1405,7 +1455,7 @@ bbbbbbbbbbbbbbbbbbbbbbbb
   });
   window.addEventListener('pointerup', ()=>{ pointer.grab=false; });
 
-  setTimeout(()=>{ if(!reduce) say(agents[0], '안녕하세요, 아래로 내려보세요', 3.2); }, 1400);
+  setTimeout(()=>{ say(agents[0], '정형륜입니다', 2.4); }, 1600);
 })();
 
 /* =========================================================
@@ -1414,10 +1464,10 @@ bbbbbbbbbbbbbbbbbbbbbbbb
 (function(){
   const wrap = document.getElementById('cast-grid');
   const desc = [
-    '길게 생각하고 길게 씁니다. 문서 작업의 절반은 얘 몫.',
-    '제일 먼저 손을 듭니다. 초안을 빠르게 뽑을 때 부릅니다.',
-    '검색과 자료 정리 담당. 링크를 잔뜩 물고 옵니다.',
-    '말이 짧습니다. 대신 농담은 제일 많이 합니다.'
+    '문서 담당. 하는 일과 소개 카드를 올립니다.',
+    '초안 담당. 캐시맵 전자증빙 카드를 올립니다.',
+    '자료 담당. 일신하이폴리 ERP 카드를 올립니다.',
+    '마무리 담당. 기록과 연락처를 올립니다.'
   ];
   CHARS.forEach((c,i)=>{
     const box = document.createElement('div');
@@ -1429,7 +1479,7 @@ bbbbbbbbbbbbbbbbbbbbbbbb
     g.imageSmoothingEnabled = false;
     g.drawImage(SPRITES[i].walk0[0], 0, 0, SPR_W*S, SPR_H*S);
     box.appendChild(cv);
-    const n = document.createElement('strong'); n.textContent = c.name;
+    const n = document.createElement('strong'); n.textContent = c.name+' · '+c.job;
     const p = document.createElement('p'); p.textContent = desc[i];
     box.appendChild(n); box.appendChild(p);
     wrap.appendChild(box);
@@ -1468,7 +1518,7 @@ bbbbbbbbbbbbbbbbbbbbbbbb
     { k:['연락','이메일','메일','컨택','채용'],
       a:'이메일은 hrunj1230@naver.com, GitHub은 github.com/hrunj1230 입니다. 짧은 문제 설명만 주시면 어떤 식으로 접근할지 먼저 정리해서 답장드립니다.' },
     { k:['캐릭터','마스코트','배경','도트','픽셀'],
-      a:'화면에서 뛰어다니는 넷은 이 페이지를 위해 직접 찍은 도트 캐릭터입니다. 어떤 회사의 마스코트도 쓰지 않았습니다. 클릭하면 한마디씩 하고, 스크롤하면 경력을 끌어올립니다.' }
+      a:'화면의 넷은 이 페이지를 위해 직접 찍은 도트 캐릭터입니다. 아미는 문서, 노바는 초안, 비트는 자료, 카이는 마무리를 맡습니다. 스크롤하면 맡은 사람만 카드를 올립니다.' }
   ];
   const FALLBACK = '아직 그 질문에는 준비된 답이 없습니다. 프로젝트, 경력, 기술 스택, 부트캠프, 연락처 중에 하나로 물어보시면 답할 수 있어요.';
   const CHIPS = ['어떤 프로젝트를 했나요?','경력은요?','기술 스택은요?','부트캠프는 언제인가요?'];
@@ -1581,9 +1631,8 @@ bbbbbbbbbbbbbbbbbbbbbbbb
   avatarCtx.imageSmoothingEnabled=false;
   avatarCtx.drawImage(SPRITES[1].walk0[0],0,0,avatarCanvas.width,avatarCanvas.height);
 
-  addMessage('안녕하세요! 정형륜의 이력서를 대신 읽어드리는 봇이에요. 궁금한 내용을 편하게 물어보세요.','bot',false);
-  const tallEnough = window.innerHeight >= 720;
-  setOpen(window.matchMedia('(min-width: 740px)').matches && tallEnough,false);
+  addMessage('이력서에 대해 물어보세요.','bot',false);
+  setOpen(false,false);
   requestAnimationFrame(()=>{body.scrollTop=0;});
 })();
 
