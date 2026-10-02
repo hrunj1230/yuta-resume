@@ -23,12 +23,13 @@ body {
 .toolbar {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   gap: 8px 16px;
   padding: 16px;
   background: #e5e7eb;
 }
-.toolbar a, .toolbar button {
+.toolbar a, .toolbar button, .toolbar .status {
   font-family: var(--font-base);
   font-size: 14px;
   color: #374151;
@@ -38,10 +39,103 @@ body {
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
+  box-sizing: border-box;
+}
+.toolbar .status {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  cursor: default;
 }
 .toolbar a:hover, .toolbar button:hover {
   background: #f9fafb;
 }
+
+.layout {
+  display: flex;
+  max-width: 1200px; /* ~210mm + 210px + gap */
+  margin: 0 auto;
+  align-items: flex-start;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 210px;
+  position: sticky;
+  top: 32px;
+  margin-top: 32px;
+  margin-right: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  overflow: hidden;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.sidebar-header {
+  padding: 16px;
+  font-weight: bold;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+.version-list {
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+.version-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  background: white;
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+  font-family: var(--font-base);
+  box-sizing: border-box;
+}
+.version-item:last-child {
+  border-bottom: none;
+}
+.version-item:hover {
+  background: #f9fafb;
+}
+.version-item[aria-current="true"] {
+  background: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  padding-left: 12px;
+}
+.version-item .ver-title {
+  font-weight: bold;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+}
+.version-item .badge {
+  font-size: 11px;
+  background: #3b82f6;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 12px;
+}
+.version-item .date {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+.version-item .note {
+  font-size: 13px;
+  color: #374151;
+  margin-top: 6px;
+  line-height: 1.3;
+}
+
+.paper-wrapper {
+  flex-grow: 1;
+  min-width: 0;
+}
+
 .paper {
   background: white;
   width: min(210mm, 100%);
@@ -51,6 +145,74 @@ body {
   padding: 14.8mm 15.9mm;
   box-sizing: border-box;
 }
+
+.paper[contenteditable="true"] {
+  outline: 2px dashed #3b82f6;
+  outline-offset: 4px;
+}
+
+.edit-panel {
+  display: none;
+  margin: 32px auto 0;
+  width: min(210mm, 100%);
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  border: 2px solid #3b82f6;
+}
+.edit-panel h3 {
+  margin-top: 0;
+  font-size: 16px;
+  color: var(--c-title);
+}
+.edit-options {
+  margin-bottom: 12px;
+}
+.edit-options label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--c-body);
+}
+.edit-panel textarea {
+  width: 100%;
+  box-sizing: border-box;
+  height: 60px;
+  padding: 8px;
+  font-family: inherit;
+  margin-bottom: 12px;
+  resize: vertical;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.edit-actions button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+  background: white;
+  cursor: pointer;
+  font-family: var(--font-base);
+}
+.edit-actions .btn-save {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+.edit-error {
+  color: #ef4444;
+  font-size: 13px;
+  margin-bottom: 8px;
+  display: none;
+}
+
 h1, h2, h3, p, ul, li {
   margin: 0;
   padding: 0;
@@ -105,6 +267,21 @@ p, li {
   body {
     background-color: white;
   }
+  .layout {
+    flex-direction: column;
+    padding: 0;
+  }
+  .sidebar {
+    width: 100%;
+    position: static;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .version-list {
+    max-height: 200px;
+  }
   .paper {
     width: 100%;
     margin: 0;
@@ -112,14 +289,30 @@ p, li {
     box-shadow: none;
     min-height: auto;
   }
+  .edit-panel {
+    width: 100%;
+    margin-top: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+  }
 }
 
 @media print {
   body {
     background-color: white;
   }
-  .toolbar {
-    display: none;
+  .toolbar, .sidebar, .edit-panel {
+    display: none !important;
+  }
+  .layout {
+    display: block;
+    padding: 0;
+    max-width: none;
+  }
+  .paper-wrapper {
+    display: block;
   }
   .paper {
     margin: 0;
@@ -144,67 +337,278 @@ p, li {
 <body>
 <div class="toolbar">
   <a href="index.html">← 메인으로</a>
-  <a href="assets/jeong-hyeongryun-resume.docx" download="정형륜 이력서.docx">DOCX 다운로드</a>
+  <a id="btn-docx" href="#" download>DOCX 다운로드</a>
   <button type="button" onclick="window.print()">PDF로 저장</button>
+  <span id="status-text" class="status"></span>
+  <button type="button" id="btn-edit" style="display:none; background:#3b82f6; color:white; border-color:#3b82f6;">수정</button>
 </div>
-<div class="paper">
 
-<h1>정형륜 | AI 에이전트 개발자</h1>
-<p class="sub">업무 시스템을 6년 7개월간 고객사에 연동해 왔고, 지금은 LLM 에이전트를 실제로 돌아가는 서비스로 만듭니다.</p>
-<p class="sub">이메일: <a href="mailto:hrunj1230@naver.com">hrunj1230@naver.com</a></p>
-<p class="sub">GitHub <a href="https://github.com/hrunj1230">github.com/hrunj1230</a> · 웹 이력서 <a href="https://hrunj1230.github.io/yuta-resume">hrunj1230.github.io/yuta-resume</a></p>
-<h2>핵심 경험</h2>
-<ul>
-<li>LangGraph 단일 에이전트로 활동 기록 기반 일지 서비스를 만들었습니다. 도구 10개를 스스로 연쇄 호출해 수집·검색·작성·저장을 대화 한 번으로 처리합니다.</li>
-<li>체크포인터에 남은 도구 결과가 호출마다 다시 전송되는 문제를 찾았습니다. 저장 직전 정리 노드와 프롬프트 캐싱으로 요청당 새 과금 토큰을 11,742 → 531로 줄였습니다.</li>
-<li>Java로 전자증빙 솔루션을 개발하고 고객사 5곳의 그룹웨어에 연동했습니다. Oracle·MS-SQL·MySQL·Tibero 등 고객사마다 다른 DB와 시스템에 맞췄습니다.</li>
-</ul>
-<h2>기술 스택</h2>
-<p class="body">주력: Python·FastAPI·LangGraph — 에이전트 API와 도구 호출 설계. Java — 전자증빙 솔루션 개발·그룹웨어 연동(6년).</p>
-<p class="body">사용 경험: LangChain·ChromaDB·LangSmith·FastMCP·SQLite·Docker·AWS EC2·ECR·GitHub Actions</p>
-<p class="body">업무 시스템: Node.js·React·DB2(ERP 구축), Oracle·MS-SQL·MySQL·Tibero(고객사 DB 연동)</p>
-<h2>프로젝트</h2>
-<h3>나의 길라잡이 | 활동 기록 기반 일지 작성 에이전트</h3>
-<p class="meta">2026.07 ~ 2026.08 · 개인 프로젝트 · 설계·구현·평가·배포 전체 담당</p>
-<p class="body">기술: Python 3.12, FastAPI, LangGraph, gpt-5.4-nano, ChromaDB, SQLite, FastMCP, Docker, AWS EC2·ECR, GitHub Actions</p>
-<p class="body">자료: <a href="https://github.com/hrunj1230/yuta_logagent">github.com/hrunj1230/yuta_logagent</a></p>
-<ul>
-<li>임베딩 모델의 128토큰 한계로 원문의 75~89%가 잘리고 있었습니다. 일지 생성은 날짜 필터 조회라 임베딩이 필요 없다고 보고, 원본은 날짜별 md 파일로 두고 일지만 ChromaDB에 넣어 원문 손실을 없앴습니다.</li>
-<li>같은 대화 5회에 275,265토큰이 쓰였습니다. 도구 결과 10,321토큰이 대화 기록에 남아 반복 전송된 것이 원인이었습니다. 도구 트래픽 정리 노드와 시스템 프롬프트 캐싱으로 요청당 새 과금 토큰을 11,742 → 531로 줄였습니다.</li>
-<li>LangSmith로 6개 모델을 8개 시나리오에서 비교해 gpt-5.4-nano를 골랐습니다. 형식 준수 97.3%(Sonnet 5는 99.1%)에 응답 6.4초로, Sonnet 5(19.3초)보다 약 3배 빨랐습니다.</li>
-<li>GitHub Actions → ECR → EC2 배포를 OIDC와 SSM으로 구성했습니다. 장기 액세스 키 없이 배포하고, API 키는 SSM Parameter Store에서 주입합니다.</li>
-</ul>
-<h3>Yuta Chat Bot | 로컬 문서 근거 RAG 질의응답 API</h3>
-<p class="meta">2026.06 ~ 2026.07 · 개인 프로젝트</p>
-<p class="body">기술: FastAPI, LangChain(LCEL), Gemini 2.5 Flash, gemini-embedding-001, ChromaDB</p>
-<p class="body">자료: <a href="https://github.com/hrunj1230/Yuta_Chat_Bot">github.com/hrunj1230/Yuta_Chat_Bot</a></p>
-<ul>
-<li>로컬 마크다운 문서를 임베딩해 ChromaDB에 저장하고, 질문과 가까운 청크 3개를 근거로 답하는 POST /rag API를 구현했습니다.</li>
-<li>문서 경로와 모델명을 환경 변수로 분리해, 대상 문서를 바꿔도 코드 수정 없이 동작하도록 했습니다.</li>
-</ul>
-<h2>경력</h2>
-<h3>캐시맵 주식회사 | WEB/APP 개발 · 대리</h3>
-<p class="meta">2025.03 ~ 현재</p>
-<ul>
-<li>일신하이폴리 ERP 구축(2025.12 ~ 2026.04): DB2 위에서 Node·React·Python으로 화면과 서버를 개발했습니다.</li>
-<li>나비서 명함관리 시스템 구축(2025.09 ~ 2025.11): Java·MySQL</li>
-<li>한국마이콤 전자증빙 시스템 구축(2025.05 ~ 2025.08): Java·Tibero</li>
-</ul>
-<h3>주식회사 코코아 | WEB/APP 개발 · 대리</h3>
-<p class="meta">2019.11 ~ 2025.02</p>
-<ul>
-<li>캐시맵 전자증빙 솔루션 개발(2019.11 ~ 2021.12): Java·MySQL</li>
-<li>전자증빙 그룹웨어 연동: 아웃백(2021.11 ~ 2022.03, Oracle), BHC(2022.04 ~ 2022.08, MS-SQL)</li>
-<li>전자증빙 시스템 구축: 쇼박스(2024.05 ~ 2024.10, MS-SQL), 클래시스(2024.11 ~ 2025.04, MySQL·MS-SQL)</li>
-</ul>
-<h2>교육</h2>
-<p class="meta">카카오테크 부트캠프 AI 실무개발 | 2026.05 ~ 2026.11(수료 예정)</p>
-<p class="body">과정 중 LangGraph 일지 에이전트와 RAG 질의응답 API를 개인 프로젝트로 만들었습니다.</p>
-<p class="meta">부천대학교 컴퓨터소프트웨어공학과 | 학사 졸업</p>
-<p class="meta">부천대학교 컴퓨터정보보안과 | 전문학사 졸업</p>
-<h2>기타</h2>
-<p class="body">claude-daily-log: Claude 대화를 날짜별 마크다운 일지로 남기는 Claude Code 플러그인 공개 · <a href="https://github.com/hrunj1230/claude-daily-log-marketplace">github.com/hrunj1230/claude-daily-log-marketplace</a></p>
-<p class="body">ktb-git: 팀 Git-Flow 컨벤션(이슈·브랜치·커밋·PR)을 지키게 하는 에이전트 스킬과 CLI 공개 · <a href="https://github.com/hrunj1230/ktb-git">github.com/hrunj1230/ktb-git</a></p>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-header">버전</div>
+    <div id="version-list" class="version-list"></div>
+  </div>
+  
+  <div class="paper-wrapper">
+    <div id="edit-panel" class="edit-panel">
+      <h3>새 버전으로 저장</h3>
+      <div id="edit-error" class="edit-error"></div>
+      <div class="edit-options">
+        <label><input type="radio" name="bump" value="patch" checked> patch (오탈자·문구)</label>
+        <label><input type="radio" name="bump" value="minor"> minor (항목 추가·변경)</label>
+        <label><input type="radio" name="bump" value="major"> major (구성 전면 변경)</label>
+      </div>
+      <textarea id="edit-note" placeholder="변경 메모 입력 (필수, 최대 200자)" maxlength="200"></textarea>
+      <div class="edit-actions">
+        <button type="button" id="btn-cancel-edit">취소</button>
+        <button type="button" id="btn-save-edit" class="btn-save">새 버전으로 저장</button>
+      </div>
+    </div>
+    <div class="paper" id="paper-content">
+      <!-- 컨텐츠 로드 영역 -->
+    </div>
+  </div>
 </div>
+
+<script>
+function compareVersions(a, b) {
+  const pa = a.split('.').map(Number);
+  const pb = b.split('.').map(Number);
+  for (let i = 0; i < 3; i++) {
+    if ((pa[i]||0) > (pb[i]||0)) return -1;
+    if ((pa[i]||0) < (pb[i]||0)) return 1;
+  }
+  return 0;
+}
+
+let versionsData = [];
+let currentVersion = null;
+let isEditing = false;
+let initialEditHTML = "";
+
+async function loadVersions() {
+  try {
+    const res = await fetch(`resumes/versions.json?t=${Date.now()}`);
+    if (!res.ok) throw new Error('manifest load failed');
+    const data = await res.json();
+    versionsData = data.versions.sort((a, b) => compareVersions(a.version, b.version));
+    
+    renderSidebar();
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const requested = urlParams.get('v');
+    const target = versionsData.find(v => v.version === requested) || versionsData[0];
+    
+    if (target) {
+      await selectVersion(target.version, false);
+    }
+  } catch (err) {
+    console.error(err);
+    document.getElementById('paper-content').innerHTML = '<p>이력서를 불러오지 못했습니다.</p>';
+  }
+}
+
+function renderSidebar() {
+  const listEl = document.getElementById('version-list');
+  listEl.innerHTML = '';
+  
+  versionsData.forEach((v, index) => {
+    const isLatest = index === 0;
+    const btn = document.createElement('button');
+    btn.className = 'version-item';
+    btn.onclick = () => selectVersion(v.version, true);
+    btn.dataset.ver = v.version;
+    
+    btn.innerHTML = `
+      <div class="ver-title">
+        <span>v${escapeHtml(v.version)}</span>
+        ${isLatest ? '<span class="badge">최신</span>' : ''}
+      </div>
+      <div class="date">${escapeHtml(String(v.date))}</div>
+      <div class="note">${escapeHtml(v.note)}</div>
+    `;
+    listEl.appendChild(btn);
+  });
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, function(m) {
+    switch (m) {
+      case '&': return '&amp;';
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '"': return '&quot;';
+      case "'": return '&#039;';
+      default: return m;
+    }
+  });
+}
+
+async function selectVersion(ver, updateHistory = true) {
+  if (isEditing) {
+    const paper = document.getElementById('paper-content');
+    if (paper.innerHTML !== initialEditHTML) {
+      if (!confirm("저장하지 않은 수정 내용이 사라집니다")) {
+        return;
+      }
+    }
+    cancelEdit(true);
+  }
+
+  const verObj = versionsData.find(v => v.version === ver) || versionsData[0];
+  if (!verObj) return;
+  ver = verObj.version;
+
+  currentVersion = ver;
+  
+  if (updateHistory) {
+    const url = new URL(window.location);
+    url.searchParams.set('v', ver);
+    window.history.replaceState({}, '', url);
+  }
+  
+  document.querySelectorAll('.version-item').forEach(el => {
+    el.setAttribute('aria-current', el.dataset.ver === ver ? 'true' : 'false');
+  });
+  
+  const isLatest = versionsData[0] && versionsData[0].version === ver;
+  document.getElementById('status-text').textContent = `v${ver} 보는 중`;
+  
+  const docxBtn = document.getElementById('btn-docx');
+  docxBtn.href = `resumes/v${encodeURIComponent(ver)}/resume.docx`;
+  docxBtn.download = `정형륜 이력서 v${ver}.docx`;
+  
+  try {
+    const res = await fetch(`resumes/v${encodeURIComponent(ver)}/content.html?t=${Date.now()}`);
+    if (!res.ok) throw new Error('content load failed');
+    const html = await res.text();
+    document.getElementById('paper-content').innerHTML = html;
+  } catch (err) {
+    console.error(err);
+    document.getElementById('paper-content').innerHTML = '<p>이력서를 불러오지 못했습니다.</p>';
+  }
+}
+
+async function checkEditMode() {
+  try {
+    const res = await fetch('api/ping');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.edit === true) {
+        document.getElementById('btn-edit').style.display = 'inline-block';
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+}
+
+document.getElementById('btn-edit').addEventListener('click', () => {
+  isEditing = true;
+  const paper = document.getElementById('paper-content');
+  initialEditHTML = paper.innerHTML;
+  paper.setAttribute('contenteditable', 'true');
+  paper.focus();
+  document.getElementById('edit-panel').style.display = 'block';
+  document.getElementById('btn-edit').style.display = 'none';
+});
+
+function cancelEdit(force = false) {
+  if (!force) {
+    const paper = document.getElementById('paper-content');
+    if (paper.innerHTML !== initialEditHTML) {
+      if (!confirm("저장하지 않은 수정 내용이 사라집니다")) {
+        return;
+      }
+    }
+  }
+  isEditing = false;
+  const paper = document.getElementById('paper-content');
+  paper.removeAttribute('contenteditable');
+  paper.innerHTML = initialEditHTML;
+  document.getElementById('edit-panel').style.display = 'none';
+  document.getElementById('edit-error').style.display = 'none';
+  document.getElementById('btn-edit').style.display = 'inline-block';
+}
+
+document.getElementById('btn-cancel-edit').addEventListener('click', () => cancelEdit(false));
+
+document.getElementById('btn-save-edit').addEventListener('click', async () => {
+  const note = document.getElementById('edit-note').value.trim();
+  if (!note) {
+    showError("변경 메모를 입력하세요.");
+    return;
+  }
+  const bump = document.querySelector('input[name="bump"]:checked').value;
+  const paper = document.getElementById('paper-content');
+  const content = paper.innerHTML;
+  const saveBtn = document.getElementById('btn-save-edit');
+  if (saveBtn.disabled) return;
+  saveBtn.disabled = true;
+  
+  try {
+    const res = await fetch('api/versions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bump, note, content })
+    });
+    
+    if (res.status === 201) {
+      const data = await res.json();
+      isEditing = false;
+      paper.removeAttribute('contenteditable');
+      document.getElementById('edit-panel').style.display = 'none';
+      document.getElementById('edit-error').style.display = 'none';
+      document.getElementById('btn-edit').style.display = 'inline-block';
+      document.getElementById('edit-note').value = '';
+      
+      await loadVersions();
+      await selectVersion(data.version, true);
+    } else {
+      const data = await res.json();
+      showError(data.error || "저장에 실패했습니다.");
+    }
+  } catch (e) {
+    showError("서버와 통신할 수 없습니다.");
+  } finally {
+    saveBtn.disabled = false;
+  }
+});
+
+function showError(msg) {
+  const errEl = document.getElementById('edit-error');
+  errEl.textContent = msg;
+  errEl.style.display = 'block';
+}
+
+document.getElementById('paper-content').addEventListener('paste', (e) => {
+  if (document.getElementById('paper-content').getAttribute('contenteditable') === 'true') {
+    e.preventDefault();
+    const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
+  }
+});
+
+document.getElementById('paper-content').addEventListener('drop', (e) => {
+  if (document.getElementById('paper-content').getAttribute('contenteditable') === 'true') {
+    e.preventDefault();
+    const text = e.dataTransfer ? e.dataTransfer.getData('text/plain') : '';
+    if (text) document.execCommand('insertText', false, text);
+  }
+});
+
+window.addEventListener('beforeunload', (e) => {
+  if (isEditing) {
+    const paper = document.getElementById('paper-content');
+    if (paper.innerHTML !== initialEditHTML) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  }
+});
+
+loadVersions();
+checkEditMode();
+</script>
 </body>
 </html>
